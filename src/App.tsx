@@ -17,41 +17,49 @@ import {
   Users,
 } from "./pages";
 
+import { AppLayout } from "./ui";
+
 import GlobalStyles from "./styles/GlobalStyles";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const router = createBrowserRouter([
   {
-    index: true,
-    element: <Navigate replace to={"dashboard"} />,
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate replace to={"dashboard"} />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "bookings",
+        element: <Bookings />,
+      },
+      {
+        path: "cabins",
+        element: <Cabins />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "account",
+        element: <Account />,
+      },
+    ],
   },
   {
-    path: "dashboard",
-    element: <Dashboard />,
-  },
-  {
-    path: "bookings",
-    element: <Bookings />,
-  },
-  {
-    path: "cabins",
-    element: <Cabins />,
-  },
-  {
-    path: "login",
+    path: "/login",
     element: <Login />,
-  },
-  {
-    path: "setting",
-    element: <Settings />,
-  },
-  {
-    path: "users",
-    element: <Users />,
-  },
-  {
-    path: "account",
-    element: <Account />,
   },
   {
     path: "*",

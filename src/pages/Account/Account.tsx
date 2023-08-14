@@ -1,18 +1,20 @@
 // import Heading from "../ui/Heading";
 // import Row from "../ui/Row";
 
+import { Heading } from "../../ui";
+
 function Account() {
   return (
     <>
-      <h1 as="h1">Update your account</h1>
+      <Heading as="h1">Update your account</Heading>
 
       <div>
-        <h1 as="h3">Update user data</h1>
+        <Heading as="h3">Update user data</Heading>
         <p>Update user data form</p>
       </div>
 
       <div>
-        <h1 as="h3">Update password</h1>
+        <Heading as="h3">Update password</Heading>
         <p>Update user password form</p>
       </div>
     </>
