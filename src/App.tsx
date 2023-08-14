@@ -1,10 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 
 import {
   Account,
@@ -20,58 +14,40 @@ import {
 import { AppLayout } from "./ui";
 
 import GlobalStyles from "./styles/GlobalStyles";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AppLayout />,
-    children: [
-      {
-        index: true,
-        element: <Navigate replace to={"dashboard"} />,
-      },
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "bookings",
-        element: <Bookings />,
-      },
-      {
-        path: "cabins",
-        element: <Cabins />,
-      },
-      {
-        path: "settings",
-        element: <Settings />,
-      },
-      {
-        path: "users",
-        element: <Users />,
-      },
-      {
-        path: "account",
-        element: <Account />,
-      },
-    ],
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      // staleTime: 60 * 1000,
+      staleTime: 0,
+    },
   },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "*",
-    element: <PageNotFound />,
-  },
-]);
+});
 
 function App() {
   return (
     <>
-      <GlobalStyles />
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route index element={<Navigate to={"/dashboard"} />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="bookings" element={<Bookings />} />
+              <Route path="cabins" element={<Cabins />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="users" element={<Users />} />
+              <Route path="account" element={<Account />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </>
   );
 }

@@ -1,3 +1,3 @@
-import { getCabins } from "./apiCabins";
+import { deleteCabin, getCabins } from "./apiCabins";
 
-export { getCabins };
+export { getCabins, deleteCabin };
