@@ -1,3 +1,3 @@
-import { cabinCreateOrEdit, deleteCabin, getCabins } from "./apiCabins";
+import { createOrUpdateCabin, deleteCabin, getCabins } from "./apiCabins";
 
-export { getCabins, cabinCreateOrEdit, deleteCabin };
+export { getCabins, createOrUpdateCabin, deleteCabin };

@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cabinCreateOrEdit } from "../../../services/apiCabins";
+import { createOrUpdateCabin } from "../../../services/apiCabins";
 import { ICabinData } from "../../../services/apiCabins/apiCabins";
 
-export const useEditCabin = () => {
+export const useUpdateCabin = () => {
   const queryClient = useQueryClient();
 
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
+  const { mutate: updateCabin, isLoading: isUpdating } = useMutation({
     mutationFn: ({
-      editedCabin,
-      editId,
+      updatedCabin,
+      updateId,
     }: {
-      editedCabin: ICabinData;
-      editId: number;
-    }) => cabinCreateOrEdit(editedCabin, editId),
+      updatedCabin: ICabinData;
+      updateId: number;
+    }) => createOrUpdateCabin(updatedCabin, updateId),
     onSuccess: async () => {
       alert("Cabin successfully edited");
       await queryClient.invalidateQueries({
@@ -22,5 +22,5 @@ export const useEditCabin = () => {
     onError: (err: { message: string }) => alert(err.message),
   });
 
-  return { isEditing, editCabin };
+  return { isUpdating, updateCabin };
 };

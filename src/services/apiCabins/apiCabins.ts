@@ -23,59 +23,59 @@ export const getCabins = async (): Promise<ICabinData[]> => {
   return data as ICabinData[];
 };
 
-export const cabinCreateOrEdit = async (
-  newCabin: ICabinData,
-  editId: number | null = null
+export const createOrUpdateCabin = async (
+  cabin: ICabinData,
+  updateId: number | null = null
 ) => {
   // https://tjfplbwsoorynsirqihu.supabase.co/storage/v1/object/public/Cabins/cabin-001.jpg
 
-  console.log(newCabin);
+  console.log(cabin);
 
   const imageName =
-    typeof newCabin.image === "string"
-      ? newCabin.image.split("/").pop()
+    typeof cabin.image === "string"
+      ? cabin.image.split("/").pop()
       : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        `${uuidv4()}-${newCabin.image.name.replace("/", "")}`;
+        `${uuidv4()}-${cabin.image.name.replace("/", "")}`;
 
   const imagePath =
-    typeof newCabin.image === "string"
-      ? newCabin.image
+    typeof cabin.image === "string"
+      ? cabin.image
       : `${supabaseUrl}/storage/v1/object/public/Cabins/${imageName}`;
 
   const cabinsTable = supabase.from("cabins");
 
   let cabinsRow: PostgrestSingleResponse<ICabinData[] | null>;
 
-  if (!editId) {
+  if (!updateId) {
     cabinsRow = await cabinsTable
       .insert([
         {
-          ...newCabin,
+          ...cabin,
           image: imagePath,
         },
       ])
       .select();
   } else {
     cabinsRow = await cabinsTable
-      .update({ ...newCabin, image: imagePath })
-      .eq("id", editId);
+      .update({ ...cabin, image: imagePath })
+      .eq("id", updateId);
   }
 
   const { data, error } = cabinsRow;
 
   if (error) {
     console.log(error);
-    throw editId
+    throw updateId
       ? new Error(
           "Something went wrong. Cabin can't be edited, data stay the same"
         )
       : new Error("Cabin could not be created");
   }
 
-  if (typeof newCabin.image !== "string" && imageName) {
+  if (typeof cabin.image !== "string" && imageName) {
     const { error: storageError } = await supabase.storage
       .from("Cabins")
-      .upload(imageName, newCabin.image);
+      .upload(imageName, cabin.image);
 
     if (storageError) {
       alert("Can not upload image and cabin will not be created");

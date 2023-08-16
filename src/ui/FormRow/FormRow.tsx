@@ -35,9 +35,9 @@ const FormRow = ({
   children,
   errorMessage = "",
 }: {
-  label: string;
+  label?: string;
   children: React.ReactElement<HTMLInputElement>;
-  errorMessage: string | undefined;
+  errorMessage?: string | undefined;
 }): JSX.Element => {
   return (
     <StyledFormRow>

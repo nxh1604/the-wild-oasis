@@ -1,16 +1,18 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useDeleteCabin } from "./hooks";
+import { useCreateCabin, useDeleteCabin } from "./hooks";
 
 import { ICabinData } from "../../services/apiCabins/apiCabins";
 import { formatCurrency } from "../../utils/helpers";
 
 import { Button } from "../../ui";
-import CabinCreateOrEditForm from "./CabinCreateOrEditForm";
+import CabinCreateOrEditForm from "./CreateOrUpdateCabinForm";
+import { HiMiniTrash, HiPencil, HiSquare2Stack } from "react-icons/hi2";
 
 const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
   const [isEdit, setIsEdit] = useState(false);
+  const { isCreating, createCabin } = useCreateCabin();
   const { isDeleting, deleteCabin } = useDeleteCabin();
 
   const {
@@ -22,6 +24,19 @@ const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
     image,
     description,
   } = cabin;
+
+  const handleDuplicateCabin = () => {
+    const duplicatedCabin = {
+      name: `copy of ${name}`,
+      maxCapacity,
+      regularPrice,
+      discount,
+      image,
+      description,
+    };
+
+    createCabin(duplicatedCabin);
+  };
 
   return (
     <>
@@ -39,16 +54,28 @@ const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
           <span>&mdash;</span>
         )}
         <div>
-          <Button onClick={() => setIsEdit(!isEdit)}>
-            {isEdit ? "Cancel" : "Edit"}
+          <Button
+            onClick={handleDuplicateCabin}
+            disabled={isCreating}
+            size="small"
+            variation="secondary">
+            <HiSquare2Stack />
           </Button>
-          <button
+          <Button
+            variation="primary"
+            size="small"
+            onClick={() => setIsEdit(!isEdit)}>
+            <HiPencil />
+          </Button>
+          <Button
+            variation="danger"
+            size="small"
             onClick={() => {
               if (cabinId) deleteCabin(cabinId);
             }}
             disabled={isDeleting}>
-            {isDeleting ? "Deleting..." : "delete"}
-          </button>
+            <HiMiniTrash />
+          </Button>
         </div>
       </TableRow>
       {isEdit && <CabinCreateOrEditForm cabin={cabin} />}

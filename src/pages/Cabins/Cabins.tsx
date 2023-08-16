@@ -2,7 +2,7 @@ import { useState } from "react";
 import { styled } from "styled-components";
 
 import { Button, Heading, Row } from "../../ui";
-import { CabinCreateOrEditForm, CabinTable } from "../../features/cabins";
+import { CreateOrUpdateCabinForm, CabinTable } from "../../features/cabins";
 
 function Cabins() {
   const [openForm, setOpenForm] = useState(false);
@@ -16,18 +16,13 @@ function Cabins() {
       <Row type="vertical">
         <CabinTable />
         <Button onClick={() => setOpenForm(!openForm)}>Add new cabin</Button>
-        {openForm && <CabinCreateOrEditForm />}
+        {openForm && <CreateOrUpdateCabinForm />}
       </Row>
     </StyledContainer>
   );
 }
 
 export default Cabins;
-
-export const loader = () => {
-  document.title = "The Wild Oasis | cabins";
-  return null;
-};
 
 const StyledContainer = styled.div`
   max-width: 120rem;

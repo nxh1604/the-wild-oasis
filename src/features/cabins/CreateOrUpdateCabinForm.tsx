@@ -3,18 +3,18 @@ import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { styled } from "styled-components";
 
 import { ICabinData } from "../../services/apiCabins/apiCabins";
-import { useCreateCabin, useEditCabin } from "./hooks";
+import { useCreateCabin, useUpdateCabin } from "./hooks";
 
-function CabinCreateOrEditForm({
+function CreateOrUpdateCabinForm({
   cabin = null,
 }: {
   cabin?: ICabinData | null;
 }) {
   const { isCreating, createCabin } = useCreateCabin();
-  const { isEditing, editCabin } = useEditCabin();
+  const { isUpdating, updateCabin } = useUpdateCabin();
 
-  const isWorking = isEditing || isCreating;
-  const editId = cabin ? cabin.id : null;
+  const isWorking = isUpdating || isCreating;
+  const updateId = cabin ? cabin.id : null;
 
   const {
     register,
@@ -29,10 +29,10 @@ function CabinCreateOrEditForm({
   const onSubmit: SubmitHandler<ICabinData> = (data) => {
     const image = data.image instanceof FileList ? data.image[0] : data.image;
 
-    if (cabin && editId) {
-      const editedCabin = { ...data, image };
-      editCabin(
-        { editedCabin, editId },
+    if (cabin && updateId) {
+      const updatedCabin = { ...data, image };
+      updateCabin(
+        { updatedCabin, updateId },
         {
           onSuccess: () => reset(),
         }
@@ -149,7 +149,7 @@ function CabinCreateOrEditForm({
         </Button>
         <Button variation="primary" disabled={isWorking}>
           {cabin
-            ? isEditing
+            ? isUpdating
               ? "Editing cabin..."
               : "Edit cabin"
             : isCreating
@@ -161,7 +161,7 @@ function CabinCreateOrEditForm({
   );
 }
 
-export default CabinCreateOrEditForm;
+export default CreateOrUpdateCabinForm;
 
 const StyledFormButton = styled.div`
   padding-top: 1.2rem;

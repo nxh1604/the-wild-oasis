@@ -17,6 +17,7 @@ const AppLayout = (): JSX.Element => {
 };
 
 const MainContainer = styled.div`
+  height: max-content;
   overflow: auto;
 `;
 

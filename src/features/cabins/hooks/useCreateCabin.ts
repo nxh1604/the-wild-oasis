@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cabinCreateOrEdit } from "../../../services/apiCabins";
+import { createOrUpdateCabin } from "../../../services/apiCabins";
 
 export const useCreateCabin = () => {
   const queryClient = useQueryClient();
 
   const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: cabinCreateOrEdit,
+    mutationFn: createOrUpdateCabin,
     onSuccess: async () => {
       alert("New cabin successfully created");
       await queryClient.invalidateQueries({
