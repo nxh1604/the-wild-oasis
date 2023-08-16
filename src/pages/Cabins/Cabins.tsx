@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { styled } from "styled-components";
 
-import { Button, Heading, Row } from "../../ui";
-import { CreateOrUpdateCabinForm, CabinTable } from "../../features/cabins";
+import { Heading, Row } from "../../ui";
+import { CabinTable, AddCabinForm } from "../../features/cabins";
 
 function Cabins() {
-  const [openForm, setOpenForm] = useState(false);
-
   return (
     <StyledContainer>
       <Row>
@@ -15,8 +12,7 @@ function Cabins() {
       </Row>
       <Row type="vertical">
         <CabinTable />
-        <Button onClick={() => setOpenForm(!openForm)}>Add new cabin</Button>
-        {openForm && <CreateOrUpdateCabinForm />}
+        <AddCabinForm />
       </Row>
     </StyledContainer>
   );

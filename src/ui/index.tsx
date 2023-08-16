@@ -15,6 +15,7 @@ import Header from "./Header";
 import Heading from "./Heading";
 import Input from "./Input";
 import Logo from "./Logo";
+import { Modal } from "./Modal";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
 import Spinner from "./Spinner";
@@ -46,4 +47,5 @@ export {
   AppLayout,
   FormRow,
   Input,
+  Modal,
 };

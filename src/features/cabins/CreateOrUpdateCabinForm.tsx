@@ -7,8 +7,10 @@ import { useCreateCabin, useUpdateCabin } from "./hooks";
 
 function CreateOrUpdateCabinForm({
   cabin = null,
+  closeModal,
 }: {
   cabin?: ICabinData | null;
+  closeModal?: () => void;
 }) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isUpdating, updateCabin } = useUpdateCabin();
@@ -34,16 +36,21 @@ function CreateOrUpdateCabinForm({
       updateCabin(
         { updatedCabin, updateId },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            closeModal?.();
+            reset();
+          },
         }
       );
       return;
     }
-
     createCabin(
       { ...data, image },
       {
-        onSuccess: () => reset(),
+        onSuccess: () => {
+          closeModal?.();
+          reset();
+        },
       }
     );
   };
@@ -53,8 +60,10 @@ function CreateOrUpdateCabinForm({
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={`${closeModal ? "modal" : "regular"}`}>
       <FormRow label="Cabin name" errorMessage={errors.name?.message}>
         <Input
           disabled={isWorking}
@@ -144,7 +153,10 @@ function CreateOrUpdateCabinForm({
 
       <StyledFormButton>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          onClick={() => closeModal?.()}
+          variation="secondary"
+          type="reset">
           Cancel
         </Button>
         <Button variation="primary" disabled={isWorking}>
