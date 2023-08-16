@@ -49,8 +49,8 @@ const variations = {
 };
 
 const Button = styled.button<{
-  size: "small" | "medium" | "large";
-  variation: "primary" | "secondary" | "danger";
+  size?: "small" | "medium" | "large";
+  variation?: "primary" | "secondary" | "danger";
 }>`
   border: none;
   border-radius: var(--border-radius-sm);

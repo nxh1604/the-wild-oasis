@@ -1,9 +1,64 @@
+import { useState } from "react";
 import styled from "styled-components";
-import { ICabinData, deleteCabin } from "../../services/apiCabins/apiCabins";
-import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const TableRow = styled.div`
+import { useDeleteCabin } from "./hooks";
+
+import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { formatCurrency } from "../../utils/helpers";
+
+import { Button } from "../../ui";
+import CabinCreateOrEditForm from "./CabinCreateOrEditForm";
+
+const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
+  const [isEdit, setIsEdit] = useState(false);
+  const { isDeleting, deleteCabin } = useDeleteCabin();
+
+  const {
+    id: cabinId,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+    description,
+  } = cabin;
+
+  return (
+    <>
+      <TableRow role="row">
+        <Img
+          src={(image as string) || "default-img.png"}
+          alt={`${description || name}`}
+        />
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity} guests</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
+        <div>
+          <Button onClick={() => setIsEdit(!isEdit)}>
+            {isEdit ? "Cancel" : "Edit"}
+          </Button>
+          <button
+            onClick={() => {
+              if (cabinId) deleteCabin(cabinId);
+            }}
+            disabled={isDeleting}>
+            {isDeleting ? "Deleting..." : "delete"}
+          </button>
+        </div>
+      </TableRow>
+      {isEdit && <CabinCreateOrEditForm cabin={cabin} />}
+    </>
+  );
+};
+
+export default CabinRow;
+
+const TableRow = styled.li`
   display: grid;
   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
   column-gap: 2.4rem;
@@ -41,43 +96,3 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
-
-const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
-  const {
-    id: cabinId,
-    name,
-    maxCapacity,
-    regularPrice,
-    discount,
-    image,
-    description,
-  } = cabin;
-
-  const queryClient = useQueryClient();
-
-  const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: deleteCabin,
-    onSuccess: async () => {
-      alert("Cabin succesfully deleted");
-      await queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-    },
-    onError: (err: { message: string }) => alert(err.message),
-  });
-
-  return (
-    <TableRow role="row">
-      <Img src={image || "default-img.png"} alt={`${description || name}`} />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity} guests</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
-      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
-        {isDeleting ? "Deleting..." : "delete"}
-      </button>
-    </TableRow>
-  );
-};
-
-export default CabinRow;

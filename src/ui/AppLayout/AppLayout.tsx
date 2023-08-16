@@ -5,14 +5,20 @@ import { styled } from "styled-components";
 const AppLayout = (): JSX.Element => {
   return (
     <StyledAppLayout>
-      <Header />
       <Sidebar />
-      <Main>
-        <Outlet />
-      </Main>
+      <MainContainer>
+        <Header />
+        <Main>
+          <Outlet />
+        </Main>
+      </MainContainer>
     </StyledAppLayout>
   );
 };
+
+const MainContainer = styled.div`
+  overflow: auto;
+`;
 
 const StyledAppLayout = styled.div`
   height: 100vh;

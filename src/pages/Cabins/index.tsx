@@ -1,3 +1,5 @@
-import Cabins from "./Cabins";
+import Cabins, { loader } from "./Cabins";
 
 export default Cabins;
+
+export { loader as cabinsLoader };

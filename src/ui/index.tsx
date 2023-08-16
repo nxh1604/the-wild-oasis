@@ -10,8 +10,10 @@ import Empty from "./Empty";
 import FileInput from "./FileInput";
 import Flag from "./Flag";
 import Form from "./Form";
+import FormRow from "./FormRow";
 import Header from "./Header";
 import Heading from "./Heading";
+import Input from "./Input";
 import Logo from "./Logo";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
@@ -42,4 +44,6 @@ export {
   Tag,
   Textarea,
   AppLayout,
+  FormRow,
+  Input,
 };

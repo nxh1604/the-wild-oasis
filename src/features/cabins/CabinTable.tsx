@@ -1,12 +1,43 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import { getCabins } from "../../services/apiCabins";
+
+import { useCabins } from "./hooks";
+
 import { Empty, Spinner } from "../../ui";
 import CabinRow from "./CabinRow";
+import StyledErrorFallback from "../../ui/ErrorFallback";
+
+const CabinTable = (): JSX.Element => {
+  const { isLoading, error, cabins } = useCabins();
+
+  if (isLoading) return <Spinner />;
+
+  if (error) return <StyledErrorFallback />;
+
+  if (!cabins?.length) return <Empty resource={"cabins"} />;
+
+  return (
+    <Table role="table">
+      <TableHeader role="row">
+        <div></div>
+        <div>cabin</div>
+        <div>capacity</div>
+        <div>price</div>
+        <div>discount</div>
+        <div></div>
+      </TableHeader>
+      <TableContent>
+        {cabins.map((cabin) => (
+          <CabinRow cabin={cabin} key={cabin.id} />
+        ))}
+      </TableContent>
+    </Table>
+  );
+};
+
+export default CabinTable;
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
-
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
@@ -28,35 +59,7 @@ const TableHeader = styled.header`
   padding: 1.6rem 2.4rem;
 `;
 
-const CabinTable = (): JSX.Element => {
-  const {
-    isLoading,
-    data: cabins,
-    error,
-  } = useQuery({
-    queryKey: ["cabins"],
-    queryFn: getCabins,
-  });
-
-  if (isLoading) return <Spinner />;
-
-  if (!cabins?.length) return <Empty resource={"cabins"} />;
-
-  return (
-    <Table role="table">
-      <TableHeader role="row">
-        <div></div>
-        <div>cabin</div>
-        <div>capacity</div>
-        <div>price</div>
-        <div>discount</div>
-        <div></div>
-      </TableHeader>
-      {cabins.map((cabin) => (
-        <CabinRow cabin={cabin} key={cabin.id} />
-      ))}
-    </Table>
-  );
-};
-
-export default CabinTable;
+const TableContent = styled.ul`
+  display: flex;
+  flex-direction: column;
+`;
