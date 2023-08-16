@@ -25,7 +25,6 @@ function UpdateSettingsForm() {
     filed: string
   ) => {
     const { value } = e.target;
-
     if (!value) return;
     updateSetting({ [filed]: Number(value) });
   };
@@ -36,7 +35,11 @@ function UpdateSettingsForm() {
         <Input
           disabled={isUpdating}
           defaultValue={minBookLength}
-          onBlur={(e) => handleUpdate(e, "minBookLength")}
+          onBlur={(e) => {
+            if (Number(e.target.value) === minBookLength) return;
+
+            handleUpdate(e, "minBookLength");
+          }}
           type="number"
           id="min-nights"
         />
@@ -44,7 +47,10 @@ function UpdateSettingsForm() {
       <FormRow label="Maximum nights/booking">
         <Input
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, "maxBookLength")}
+          onBlur={(e) => {
+            if (Number(e.target.value) === maxBookLength) return;
+            handleUpdate(e, "maxBookLength");
+          }}
           defaultValue={maxBookLength}
           type="number"
           id="max-nights"
@@ -53,7 +59,11 @@ function UpdateSettingsForm() {
       <FormRow label="Maximum guests/booking">
         <Input
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
+          onBlur={(e) => {
+            if (Number(e.target.value) === maxGuestsPerBooking) return;
+
+            handleUpdate(e, "maxGuestsPerBooking");
+          }}
           defaultValue={maxGuestsPerBooking}
           type="number"
           id="max-guests"
@@ -62,7 +72,11 @@ function UpdateSettingsForm() {
       <FormRow label="Breakfast price">
         <Input
           disabled={isUpdating}
-          onBlur={(e) => handleUpdate(e, "breakfastPrice")}
+          onBlur={(e) => {
+            if (Number(e.target.value) === breakfastPrice) return;
+
+            handleUpdate(e, "breakfastPrice");
+          }}
           defaultValue={breakfastPrice}
           type="number"
           id="breakfast-price"

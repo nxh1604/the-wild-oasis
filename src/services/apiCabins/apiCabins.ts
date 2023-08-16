@@ -14,7 +14,7 @@ export interface ICabinData {
 
 export const getCabins = async (): Promise<ICabinData[]> => {
   const { data, error } = await supabase.from("cabins").select("*");
-
+  console.log(data);
   if (error) {
     console.log(error);
     throw new Error("Can not get cabins");

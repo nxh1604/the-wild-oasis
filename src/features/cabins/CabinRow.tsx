@@ -1,19 +1,15 @@
-import { useState } from "react";
 import styled from "styled-components";
+import { HiSquare2Stack } from "react-icons/hi2";
 
-import { useCreateCabin, useDeleteCabin } from "./hooks";
-
-import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { useCreateCabin } from "./hooks";
 import { formatCurrency } from "../../utils/helpers";
+import { ICabinData } from "../../services/apiCabins/apiCabins";
 
 import { Button } from "../../ui";
-import CabinCreateOrEditForm from "./CreateOrUpdateCabinForm";
-import { HiMiniTrash, HiPencil, HiSquare2Stack } from "react-icons/hi2";
+import { DeleteCabinModal, UpdateCabinModal } from "./modals";
 
 const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
-  const [isEdit, setIsEdit] = useState(false);
   const { isCreating, createCabin } = useCreateCabin();
-  const { isDeleting, deleteCabin } = useDeleteCabin();
 
   const {
     id: cabinId,
@@ -61,24 +57,10 @@ const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
             variation="secondary">
             <HiSquare2Stack />
           </Button>
-          <Button
-            variation="primary"
-            size="small"
-            onClick={() => setIsEdit(!isEdit)}>
-            <HiPencil />
-          </Button>
-          <Button
-            variation="danger"
-            size="small"
-            onClick={() => {
-              if (cabinId) deleteCabin(cabinId);
-            }}
-            disabled={isDeleting}>
-            <HiMiniTrash />
-          </Button>
+          <UpdateCabinModal cabin={cabin} />
+          <DeleteCabinModal cabinId={cabinId} />
         </div>
       </TableRow>
-      {isEdit && <CabinCreateOrEditForm cabin={cabin} />}
     </>
   );
 };

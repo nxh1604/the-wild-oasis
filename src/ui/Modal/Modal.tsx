@@ -3,12 +3,12 @@ import React, {
   useContext,
   useState,
   cloneElement,
-  useEffect,
-  useRef,
 } from "react";
+import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
-import styled from "styled-components";
+
+import { useClickOutSide } from "../../hooks";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -63,12 +63,14 @@ interface IDefaultModalValue {
   openModalName: string;
   openModal: (name: string) => void;
   closeModal: () => void;
+  modalRef: null | React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const ModalContext = createContext<IDefaultModalValue>({
   openModalName: "",
   openModal: () => {},
   closeModal: () => {},
+  modalRef: null,
 });
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
@@ -77,11 +79,13 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   const openModal = (modalName: string) => {
     setOpenModalName(modalName);
   };
-
   const closeModal = () => setOpenModalName("");
 
+  const { ref: modalRef } = useClickOutSide(closeModal);
+
   return (
-    <ModalContext.Provider value={{ openModalName, openModal, closeModal }}>
+    <ModalContext.Provider
+      value={{ openModalName, openModal, closeModal, modalRef }}>
       {children}
     </ModalContext.Provider>
   );
@@ -89,14 +93,14 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
 
 const Open = ({
   children,
-  windowName,
+  openWindowName,
 }: {
   children: React.ReactElement;
-  windowName: string;
+  openWindowName: string;
 }) => {
   const { openModal } = useContext(ModalContext);
 
-  return cloneElement(children, { onClick: () => openModal(windowName) });
+  return cloneElement(children, { onClick: () => openModal(openWindowName) });
 };
 
 const Window = ({
@@ -106,21 +110,7 @@ const Window = ({
   children: React.ReactElement;
   windowName: string;
 }) => {
-  const { openModalName, closeModal } = useContext(ModalContext);
-
-  const modalRef = useRef<null | HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (modalRef.current && modalRef.current?.contains(e.target as Node))
-        return;
-      closeModal();
-    };
-
-    document.addEventListener("click", handleClick, true);
-
-    return () => document.removeEventListener("click", handleClick, true);
-  }, [closeModal]);
+  const { openModalName, closeModal, modalRef } = useContext(ModalContext);
 
   if (openModalName !== windowName) return null;
 

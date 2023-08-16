@@ -1,7 +1,8 @@
 import { styled } from "styled-components";
 
 import { Heading, Row } from "../../ui";
-import { CabinTable, AddCabinForm } from "../../features/cabins";
+import { CabinTable } from "../../features/cabins";
+import { CreateCabinModal } from "../../features/cabins/modals";
 
 function Cabins() {
   return (
@@ -12,7 +13,7 @@ function Cabins() {
       </Row>
       <Row type="vertical">
         <CabinTable />
-        <AddCabinForm />
+        <CreateCabinModal />
       </Row>
     </StyledContainer>
   );

@@ -32,6 +32,7 @@ function CreateOrUpdateCabinForm({
     const image = data.image instanceof FileList ? data.image[0] : data.image;
 
     if (cabin && updateId) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const updatedCabin = { ...data, image };
       updateCabin(
         { updatedCabin, updateId },
