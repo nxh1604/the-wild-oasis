@@ -1,3 +1,4 @@
+import { HTMLAttributes, ReactNode, createContext, useContext } from "react";
 import styled from "styled-components";
 
 const StyledTable = styled.div`
@@ -9,7 +10,7 @@ const StyledTable = styled.div`
   overflow: hidden;
 `;
 
-const CommonRow = styled.div`
+const CommonRow = styled.div<{ columns: string }>`
   display: grid;
   grid-template-columns: ${(props) => props.columns};
   column-gap: 2.4rem;
@@ -58,3 +59,70 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+interface IDefaultTableContext {
+  columns: string;
+}
+
+const TableContext = createContext<IDefaultTableContext>({ columns: "" });
+
+const Table = ({
+  columns,
+  children,
+  ...any
+}: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
+  columns: string;
+}) => {
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable {...any}>{children}</StyledTable>
+    </TableContext.Provider>
+  );
+};
+
+const Header = ({
+  children,
+  ...restProps
+}: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
+  as: string;
+}) => {
+  const { columns } = useContext(TableContext);
+
+  return (
+    <StyledHeader {...restProps} columns={columns}>
+      {children}
+    </StyledHeader>
+  );
+};
+
+const Content = ({
+  render,
+  data,
+}: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render: (data?: any) => ReactNode;
+  data: unknown[];
+}) => {
+  if (!data.length) return <Empty>No data</Empty>;
+
+  return <StyledBody>{data.map(render)}</StyledBody>;
+};
+
+const Row = ({
+  children,
+  ...restProps
+}: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => {
+  const { columns } = useContext(TableContext);
+
+  return (
+    <StyledRow columns={columns} {...restProps}>
+      {children}
+    </StyledRow>
+  );
+};
+
+Table.Header = Header;
+Table.Content = Content;
+Table.Row = Row;
+Table.Footer = Footer;
+
+export default Table;

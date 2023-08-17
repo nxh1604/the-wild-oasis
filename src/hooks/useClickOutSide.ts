@@ -8,8 +8,9 @@ export const useClickOutSide = (
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (ref.current && ref.current?.contains(e.target as Node)) return;
-      handler();
+      if (ref.current && !ref.current?.contains(e.target as Node)) {
+        handler();
+      }
     };
 
     document.addEventListener("click", handleClick, ListenToCapturing);

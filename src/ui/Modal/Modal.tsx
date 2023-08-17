@@ -63,14 +63,12 @@ interface IDefaultModalValue {
   openModalName: string;
   openModal: (name: string) => void;
   closeModal: () => void;
-  modalRef: null | React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const ModalContext = createContext<IDefaultModalValue>({
   openModalName: "",
   openModal: () => {},
   closeModal: () => {},
-  modalRef: null,
 });
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
@@ -81,11 +79,8 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   };
   const closeModal = () => setOpenModalName("");
 
-  const { ref: modalRef } = useClickOutSide(closeModal);
-
   return (
-    <ModalContext.Provider
-      value={{ openModalName, openModal, closeModal, modalRef }}>
+    <ModalContext.Provider value={{ openModalName, openModal, closeModal }}>
       {children}
     </ModalContext.Provider>
   );
@@ -110,7 +105,8 @@ const Window = ({
   children: React.ReactElement;
   windowName: string;
 }) => {
-  const { openModalName, closeModal, modalRef } = useContext(ModalContext);
+  const { openModalName, closeModal } = useContext(ModalContext);
+  const { ref: modalRef } = useClickOutSide(closeModal);
 
   if (openModalName !== windowName) return null;
 

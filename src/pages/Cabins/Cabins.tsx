@@ -13,7 +13,9 @@ function Cabins() {
       </Row>
       <Row type="vertical">
         <CabinTable />
-        <CreateCabinModal />
+        <div style={{ alignSelf: "flex-end" }}>
+          <CreateCabinModal />
+        </div>
       </Row>
     </StyledContainer>
   );

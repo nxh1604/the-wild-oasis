@@ -60,3 +60,14 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+const Menu = () => {};
+
+const Open = () => {};
+
+const Content = () => {};
+
+Menu.Open = Open;
+Menu.Content = Content;
+
+export default Menu;
