@@ -1,7 +1,7 @@
 import { useDeleteCabin } from "../hooks";
 
 import { HiMiniTrash } from "react-icons/hi2";
-import { Button, ConfirmDelete, Modal } from "../../../ui";
+import { ConfirmDelete, Menus, Modal } from "../../../ui";
 
 const DeleteCabinModal = ({
   cabinId,
@@ -13,15 +13,9 @@ const DeleteCabinModal = ({
   return (
     <Modal>
       <Modal.Open openWindowName="delete">
-        <Button
-          variation="danger"
-          size="small"
-          onClick={() => {
-            if (cabinId) deleteCabin(cabinId);
-          }}
-          disabled={isDeleting}>
-          <HiMiniTrash />
-        </Button>
+        <Menus.Item>
+          <HiMiniTrash /> Delete Cabin
+        </Menus.Item>
       </Modal.Open>
       <Modal.Window windowName="delete">
         <ConfirmDelete

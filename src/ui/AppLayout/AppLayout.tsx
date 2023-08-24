@@ -17,7 +17,10 @@ const AppLayout = (): JSX.Element => {
 };
 
 const MainContainer = styled.div`
-  height: max-content;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: max-content;
+  max-height: 100vh;
   overflow: auto;
 `;
 
@@ -25,8 +28,7 @@ const StyledAppLayout = styled.div`
   height: 100vh;
   background-color: var(--color-grey-50);
   display: grid;
-  grid-template-columns: 26rem 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: min-content 1fr;
 `;
 
 const Main = styled.main`

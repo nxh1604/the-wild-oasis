@@ -106,7 +106,7 @@ const Window = ({
   windowName: string;
 }) => {
   const { openModalName, closeModal } = useContext(ModalContext);
-  const { ref: modalRef } = useClickOutSide(closeModal);
+  const { ref: modalRef } = useClickOutSide<HTMLDivElement | null>(closeModal);
 
   if (openModalName !== windowName) return null;
 

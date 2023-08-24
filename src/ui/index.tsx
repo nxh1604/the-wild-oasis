@@ -15,11 +15,13 @@ import Header from "./Header";
 import Heading from "./Heading";
 import Input from "./Input";
 import Logo from "./Logo";
+import Menus from "./Menus";
 import { Modal } from "./Modal";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
 import Spinner from "./Spinner";
 import SpinnerMini from "./SpinnerMini";
+import Table from "./Table/Table";
 import Tag from "./Tag";
 import Textarea from "./Textarea";
 
@@ -48,4 +50,6 @@ export {
   FormRow,
   Input,
   Modal,
+  Menus,
+  Table,
 };

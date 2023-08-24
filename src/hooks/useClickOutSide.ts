@@ -1,14 +1,18 @@
 import { useEffect, useRef } from "react";
 
-export const useClickOutSide = (
+export const useClickOutSide = <T>(
   handler: () => void,
   ListenToCapturing = true
 ) => {
-  const ref = useRef<null | HTMLDivElement>(null);
+  const ref = useRef<null | T>(null);
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current?.contains(e.target as Node)) {
+      if (
+        ref.current &&
+        ref.current instanceof HTMLElement &&
+        !ref.current?.contains(e.target as Node)
+      ) {
         handler();
       }
     };
