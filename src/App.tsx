@@ -17,6 +17,8 @@ import {
   Users,
 } from "./pages";
 
+import { loader as cabinsLoader } from "./pages/Cabins/Loader";
+
 import { AppLayout } from "./ui";
 
 import GlobalStyles from "./styles/GlobalStyles";
@@ -39,7 +41,11 @@ const router = createBrowserRouter(
         <Route index element={<Navigate to={"/dashboard"} />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="bookings" element={<Bookings />} />
-        <Route path="cabins" element={<Cabins />} />
+        <Route
+          path="cabins"
+          element={<Cabins />}
+          loader={cabinsLoader(queryClient)}
+        />
         <Route path="settings" element={<Settings />} />
         <Route path="users" element={<Users />} />
         <Route path="account" element={<Account />} />
