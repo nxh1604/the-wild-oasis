@@ -1,3 +1,5 @@
+import React from "react";
+import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const StyledFilter = styled.div`
@@ -10,12 +12,12 @@ const StyledFilter = styled.div`
   gap: 0.4rem;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button<{ active?: "true" | "false" }>`
   background-color: var(--color-grey-0);
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.active === "true" &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
@@ -32,6 +34,42 @@ const FilterButton = styled.button`
     background-color: var(--color-brand-600);
     color: var(--color-brand-50);
   }
+
+  &:disabled {
+    cursor: unset;
+  }
 `;
 
-export default StyledFilter;
+const Filter = ({
+  field,
+  options,
+}: React.PropsWithChildren<{
+  field: string;
+  options: Array<{ [T: string]: string }>;
+}>) => {
+  const [searchParams, setSearchParms] = useSearchParams();
+  const handleClick = (value: string) => {
+    searchParams.set(field, value);
+    setSearchParms(searchParams);
+  };
+
+  const active = searchParams.get(field) || options[0].value;
+
+  return (
+    <StyledFilter>
+      {options.map((option) => (
+        <FilterButton
+          key={option.value}
+          active={`${active === option.value}`}
+          disabled={active === option.value}
+          onClick={() => {
+            handleClick(option.value);
+          }}>
+          {option.label}
+        </FilterButton>
+      ))}
+    </StyledFilter>
+  );
+};
+
+export default Filter;

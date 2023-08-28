@@ -7,7 +7,9 @@ import Checkbox from "./Checkbox";
 import ConfirmDelete from "./ConfirmDelete";
 import DataItem from "./DataItem";
 import Empty from "./Empty";
+import StyledErrorFallback from "./ErrorFallback";
 import FileInput from "./FileInput";
+import Filter from "./Filter/Filter";
 import Flag from "./Flag";
 import Form from "./Form";
 import FormRow from "./FormRow";
@@ -19,9 +21,11 @@ import Menus from "./Menus";
 import { Modal } from "./Modal";
 import Row from "./Row";
 import Sidebar from "./Sidebar";
+import SortBy from "./SortBy";
 import Spinner from "./Spinner";
 import SpinnerMini from "./SpinnerMini";
 import Table from "./Table/Table";
+import TableOperations from "./TableOperations";
 import Tag from "./Tag";
 import Textarea from "./Textarea";
 
@@ -52,4 +56,8 @@ export {
   Modal,
   Menus,
   Table,
+  Filter,
+  StyledErrorFallback,
+  SortBy,
+  TableOperations,
 };

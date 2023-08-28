@@ -83,7 +83,7 @@ const Header = ({
   children,
   ...restProps
 }: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>> & {
-  as: string;
+  as?: string;
 }) => {
   const { columns } = useContext(TableContext);
 
@@ -99,7 +99,7 @@ const Content = ({
   data,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  render: (data?: any) => ReactNode;
+  render: (data?: any, index?: number) => ReactNode;
   data: unknown[];
 }) => {
   if (!data.length) return <Empty>No data</Empty>;
