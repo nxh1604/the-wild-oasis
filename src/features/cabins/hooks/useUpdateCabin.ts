@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createOrUpdateCabin } from "../../../services/apiCabins";
-import { ICabinData } from "../../../services/apiCabins/apiCabins";
+import { ICabinData } from "../../../services/apiCabins";
 
 export const useUpdateCabin = () => {
   const queryClient = useQueryClient();

@@ -3,7 +3,7 @@ import { HiSquare2Stack } from "react-icons/hi2";
 
 import { useCreateCabin } from "./hooks";
 import { formatCurrency } from "../../utils/helpers";
-import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { ICabinData } from "../../services/apiCabins";
 
 import { Button } from "../../ui";
 import { DeleteCabinModal, UpdateCabinModal } from "./modals";

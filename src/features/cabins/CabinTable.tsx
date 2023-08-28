@@ -1,21 +1,57 @@
 // import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 import { useCabins } from "./hooks";
 
-import { Empty, Spinner } from "../../ui";
 import CabinRow from "./CabinRow";
-import StyledErrorFallback from "../../ui/ErrorFallback";
-import Table from "../../ui/Table/Table";
-import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { Empty, Table } from "../../ui";
 
 const CabinTable = (): JSX.Element => {
-  const { isLoading, error, cabins } = useCabins();
-
-  if (isLoading) return <Spinner />;
-
-  if (error) return <StyledErrorFallback />;
+  const { cabins } = useCabins();
+  const [searchParams] = useSearchParams();
 
   if (!cabins?.length) return <Empty resource={"cabins"} />;
+
+  // 1 Filter
+  const filterQuery = searchParams.get("discount") || "all";
+
+  let filterData: ICabinData[] | undefined;
+  switch (filterQuery) {
+    case "all": {
+      filterData = cabins;
+      break;
+    }
+    case "no-discount": {
+      filterData = cabins?.filter((cabin) => +cabin.discount === 0);
+      break;
+    }
+    case "with-discount": {
+      filterData = cabins?.filter((cabin) => +cabin.discount > 0);
+      break;
+    }
+    default:
+      filterData = [];
+  }
+  // 2 Sort
+  const sortQuery = searchParams.get("sort")?.split("-") || ["name", "asc"];
+  const sortType = sortQuery[1] === "asc" ? 1 : -1;
+  const sortKey = sortQuery[0] as
+    | "name"
+    | "maxCapacity"
+    | "discount"
+    | "regularPrice";
+  const sortData = filterData.sort((p, c) => {
+    const prev = p[sortKey];
+    const cur = c[sortKey];
+    if (typeof prev === "string" && typeof cur === "string") {
+      return (
+        prev.localeCompare(cur, "en", {
+          sensitivity: "base",
+        }) * sortType
+      );
+    }
+    return (Number(prev) - Number(cur)) * sortType;
+  });
 
   return (
     <Table role="table" columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -28,7 +64,7 @@ const CabinTable = (): JSX.Element => {
         <div></div>
       </Table.Header>
       <Table.Content
-        data={cabins}
+        data={sortData}
         render={(cabin: ICabinData) => (
           <CabinRow cabin={cabin} key={cabin.id} />
         )}

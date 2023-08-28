@@ -6,7 +6,7 @@ import { Empty, Spinner } from "../../ui";
 import CabinRow from "./CabinRow";
 import StyledErrorFallback from "../../ui/ErrorFallback";
 import Table from "../../ui/Table/Table";
-import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { ICabinData } from "../../services/apiCabins";
 
 const CabinTable = (): JSX.Element => {
   const { isLoading, error, cabins } = useCabins();

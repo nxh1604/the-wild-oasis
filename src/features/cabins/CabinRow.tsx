@@ -8,7 +8,6 @@ import {
 
 import { useCreateCabin, useDeleteCabin } from "./hooks";
 import { formatCurrency } from "../../utils/helpers";
-import { ICabinData } from "../../services/apiCabins/apiCabins";
 
 import { ConfirmDelete, Menus, Modal, Table } from "../../ui";
 import { CreateOrUpdateCabinForm } from ".";

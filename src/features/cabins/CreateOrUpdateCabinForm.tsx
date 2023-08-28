@@ -1,8 +1,9 @@
-import { Button, FileInput, Form, FormRow, Input, Textarea } from "../../ui";
-import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
 import { styled } from "styled-components";
 
-import { ICabinData } from "../../services/apiCabins/apiCabins";
+import { Button, FileInput, Form, FormRow, Input, Textarea } from "../../ui";
+
+import { FieldErrors, SubmitHandler, useForm } from "react-hook-form";
+
 import { useCreateCabin, useUpdateCabin } from "./hooks";
 
 function CreateOrUpdateCabinForm({
