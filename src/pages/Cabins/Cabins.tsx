@@ -4,7 +4,6 @@ import { Heading, Row, StyledErrorFallback } from "../../ui";
 import { CabinTable } from "../../features/cabins";
 import { CreateCabinModal } from "../../features/cabins/modals";
 import { Await, useLoaderData } from "react-router-dom";
-import { ICabinData } from "../../services/apiCabins/apiCabins";
 import CabinsSkeletonLoading from "./CabinsSkeletonLoading";
 import CabinTableOperations from "../../features/cabins/CabinTableOperations";
 
@@ -22,11 +21,11 @@ function Cabins() {
         <Suspense fallback={<CabinsSkeletonLoading />}>
           <Await resolve={cabins} errorElement={<StyledErrorFallback />}>
             <CabinTable />
-            <div style={{ alignSelf: "flex-end" }}>
-              <CreateCabinModal />
-            </div>
           </Await>
         </Suspense>
+        <div style={{ alignSelf: "flex-end" }}>
+          <CreateCabinModal />
+        </div>
       </Row>
     </StyledContainer>
   );
@@ -34,7 +33,7 @@ function Cabins() {
 
 export default Cabins;
 
-export const StyledContainer = styled.div`
+const StyledContainer = styled.div`
   max-width: 120rem;
   margin: 0 auto;
   display: flex;

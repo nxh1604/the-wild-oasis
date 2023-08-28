@@ -13,12 +13,12 @@ declare interface ICabinData {
   image: string | File;
 }
 
-declare interface IBookingData {
+declare interface IBookingData<CabinType, GuestType> {
   id: number;
   created_at: Date;
   startDate: Date;
   endDate: Date;
-  numNights: Date;
+  numNights: number;
   numGuests: number;
   cabinPrice: number;
   extrasPrice: number;
@@ -26,8 +26,8 @@ declare interface IBookingData {
   status: "unconfirmed" | "checked-out" | "checked-in";
   isPaid: boolean;
   observations: string;
-  cabinId: number | Partial<ICabinData>;
-  guestId: number | Partial<IGuestData>;
+  cabinId: CabinType;
+  guestId: GuestType;
   hasBreakfast: boolean;
 }
 

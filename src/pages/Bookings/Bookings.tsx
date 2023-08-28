@@ -1,10 +1,16 @@
-import BookingTable from "../../features/bookings/BookingTable";
-import BookingTableOperations from "../../features/bookings/BookingTableOperations";
-import Heading from "../../ui/Heading";
-import Row from "../../ui/Row";
-import { StyledContainer } from "../Cabins/Cabins";
+import { Suspense } from "react";
+import { Await, useLoaderData } from "react-router-dom";
+import { styled } from "styled-components";
+
+import { Heading, Row, StyledErrorFallback } from "../../ui";
+import { BookingTable, BookingTableOperations } from "../../features/bookings";
+import BookingsSkeleton from "./BookingsSkeleton";
 
 function Bookings() {
+  const { bookings } = useLoaderData() as {
+    bookings: IBookingData<number, number>[];
+  };
+
   return (
     <StyledContainer>
       <Row type="horizontal">
@@ -12,10 +18,22 @@ function Bookings() {
         <BookingTableOperations />
       </Row>
       <Row type="vertical">
-        <BookingTable />
+        <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
+          <Await resolve={bookings} errorElement={<StyledErrorFallback />}>
+            <BookingTable />
+          </Await>
+        </Suspense>
       </Row>
     </StyledContainer>
   );
 }
 
 export default Bookings;
+
+const StyledContainer = styled.div`
+  max-width: 120rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+`;

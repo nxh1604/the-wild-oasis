@@ -11,7 +11,7 @@ export const getAllBookings = async () => {
     guestId (
       *
     )
-  `)) as PostgrestResponse<IBookingData>;
+  `)) as PostgrestResponse<IBookingData<ICabinData, IGuestData>>;
 
   if (error) {
     console.error(error);
@@ -26,14 +26,14 @@ export async function getBooking(id: number | string) {
     .from("bookings")
     .select("*, cabins(*), guests(*)")
     .eq("id", id)
-    .single()) as PostgrestResponse<IBookingData>;
+    .single()) as PostgrestResponse<IBookingData<ICabinData, IGuestData>>;
 
   if (error) {
     console.error(error);
     throw new Error("Booking not found");
   }
 
-  return data;
+  return data[0];
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
@@ -43,7 +43,7 @@ export async function getBookingsAfterDate(date: Date) {
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
     .lte("created_at", getToday({ end: true }))) as PostgrestResponse<
-    Partial<IBookingData>
+    Partial<IBookingData<ICabinData, IGuestData>>
   >;
 
   if (error) {
@@ -61,7 +61,9 @@ export async function getStaysAfterDate(date: Date) {
     // .select('*')
     .select("*, guests(fullName)")
     .gte("startDate", date)
-    .lte("startDate", getToday())) as PostgrestResponse<Partial<IBookingData>>;
+    .lte("startDate", getToday())) as PostgrestResponse<
+    Partial<IBookingData<ICabinData, IGuestData>>
+  >;
 
   if (error) {
     console.error(error);
@@ -79,7 +81,9 @@ export async function getStaysTodayActivity() {
     .or(
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
     )
-    .order("created_at")) as PostgrestResponse<Partial<IBookingData>>;
+    .order("created_at")) as PostgrestResponse<
+    Partial<IBookingData<ICabinData, IGuestData>>
+  >;
 
   // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
   // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
@@ -94,7 +98,7 @@ export async function getStaysTodayActivity() {
 
 export async function updateBooking(
   id: number | string,
-  obj: Partial<IBookingData>
+  obj: Partial<IBookingData<ICabinData, IGuestData>>
 ) {
   const { data, error } = (await supabase
     .from("bookings")
