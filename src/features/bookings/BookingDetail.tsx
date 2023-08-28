@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
 import BookingDataBox from "./BookingDataBox";
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import Tag from "../../ui/Tag";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button/Button";
-import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
+import {
+  Button,
+  ButtonGroup,
+  ButtonText,
+  Heading,
+  Row,
+  StyledErrorFallback,
+  Tag,
+} from "../../ui";
+import { useParams } from "react-router-dom";
+import { useBooking } from "./hooks/useBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -17,9 +22,9 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  const booking = {};
+  const { bookingId } = useParams();
+  const { booking } = useBooking(bookingId);
   const status = "checked-in";
-
   const moveBack = useMoveBack();
 
   const statusToTagName = {
@@ -27,6 +32,8 @@ function BookingDetail() {
     "checked-in": "green",
     "checked-out": "silver",
   };
+
+  if (!booking) return <StyledErrorFallback />;
 
   return (
     <>

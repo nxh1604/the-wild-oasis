@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
 
-import Tag from "../../ui/Tag";
-import Table from "../../ui/Table";
-
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import { Table, Tag } from "../../ui";
+import { guests } from "../../data/data-guests";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -34,6 +33,8 @@ const Amount = styled.div`
   font-weight: 500;
 `;
 
+//create Menus action for booking row
+
 function BookingRow({
   booking: {
     id: bookingId,
@@ -44,10 +45,13 @@ function BookingRow({
     numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
-    cabins: { name: cabinName },
+    guestId: { fullName: guestName, email },
+    cabinId: { name: cabinName },
   },
+}: {
+  booking: IBookingData<ICabinData, IGuestData>;
 }) {
+  console.log(guests);
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
