@@ -1,25 +1,20 @@
-import { PostgrestSingleResponse } from "@supabase/supabase-js";
-import supabase, { supabaseUrl } from "../supaBase";
+import {
+  PostgrestResponse,
+  PostgrestSingleResponse,
+} from "@supabase/supabase-js";
+import supabase, { supabaseUrl } from "../supabase";
 import { v4 as uuidv4 } from "uuid";
-export interface ICabinData {
-  id?: number;
-  created_at?: Date;
-  name: string;
-  regularPrice: number | "";
-  maxCapacity: number | "";
-  discount: number | "";
-  description: string;
-  image: string | File;
-}
 
 export const getCabins = async (): Promise<ICabinData[]> => {
-  const { data, error } = await supabase.from("cabins").select("*");
+  const { data, error } = (await supabase
+    .from("cabins")
+    .select("*")) as PostgrestResponse<ICabinData>;
   if (error) {
     console.log(error);
     throw new Error("Can not get cabins");
   }
 
-  return data as ICabinData[];
+  return data;
 };
 
 export const createOrUpdateCabin = async (
@@ -27,8 +22,6 @@ export const createOrUpdateCabin = async (
   updateId: number | null = null
 ) => {
   // https://tjfplbwsoorynsirqihu.supabase.co/storage/v1/object/public/Cabins/cabin-001.jpg
-
-  console.log(cabin);
 
   const imageName =
     typeof cabin.image === "string"
