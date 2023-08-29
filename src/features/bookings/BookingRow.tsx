@@ -5,13 +5,8 @@ import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { Menus, Table, Tag } from "../../ui";
 
-import {
-  HiCheckCircle,
-  HiEllipsisVertical,
-  HiEye,
-  HiMiniTrash,
-  HiXCircle,
-} from "react-icons/hi2";
+import { HiCheckCircle, HiEllipsisVertical, HiEye, HiMiniTrash, HiXCircle } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -52,12 +47,13 @@ function BookingRow({
     numGuests,
     totalPrice,
     status,
-    guestId: { fullName: guestName, email },
-    cabinId: { name: cabinName },
+    guests: { fullName: guestName, email },
+    cabins: { name: cabinName },
   },
 }: {
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
+  const navigate = useNavigate();
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -75,10 +71,8 @@ function BookingRow({
 
       <Stacked>
         <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
+          {isToday(new Date(startDate)) ? "Today" : formatDistanceFromNow(startDate)} &rarr;{" "}
+          {numNights} night stay
         </span>
         <span>
           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
@@ -94,18 +88,28 @@ function BookingRow({
           <HiEllipsisVertical />
         </Menus.Open>
         <Menus.Content menuId={bookingId}>
-          <Menus.Item>
+          <Menus.Item
+            onClick={() => {
+              navigate(`${bookingId}`);
+            }}
+          >
             <HiEye /> Booking details
           </Menus.Item>
-          <Menus.Item>
-            <HiCheckCircle /> Checked-in
-          </Menus.Item>
-          <Menus.Item>
-            <HiXCircle /> Checked-out
-          </Menus.Item>
-          <Menus.Item>
-            <HiMiniTrash /> Remove booking
-          </Menus.Item>
+          {status === "unconfirmed" && (
+            <Menus.Item>
+              <HiCheckCircle /> Checked-in
+            </Menus.Item>
+          )}
+          {status === "checked-in" && (
+            <Menus.Item>
+              <HiXCircle /> Checked-out
+            </Menus.Item>
+          )}
+          {status === "unconfirmed" && (
+            <Menus.Item>
+              <HiMiniTrash /> Remove booking
+            </Menus.Item>
+          )}
         </Menus.Content>
       </Menus.Menu>
     </Table.Row>

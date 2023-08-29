@@ -3,15 +3,7 @@ import styled from "styled-components";
 import BookingDataBox from "./BookingDataBox";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import {
-  Button,
-  ButtonGroup,
-  ButtonText,
-  Heading,
-  Row,
-  StyledErrorFallback,
-  Tag,
-} from "../../ui";
+import { Button, ButtonGroup, ButtonText, Empty, Heading, Row, Tag } from "../../ui";
 import { useParams } from "react-router-dom";
 import { useBooking } from "./hooks/useBooking";
 
@@ -33,13 +25,13 @@ function BookingDetail() {
     "checked-out": "silver",
   };
 
-  if (!booking) return <StyledErrorFallback />;
+  if (!booking) return <Empty resource="booking" />;
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
-          <Heading as="h1">Booking #X</Heading>
+          <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>

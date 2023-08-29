@@ -66,7 +66,7 @@ const Guest = styled.div`
   }
 `;
 
-const Price = styled.div<{ isPaid?: boolean }>`
+const Price = styled.div<{ $isPaid?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -75,9 +75,8 @@ const Price = styled.div<{ isPaid?: boolean }>`
   margin-top: 2.4rem;
 
   background-color: ${(props) =>
-    props.isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
-  color: ${(props) =>
-    props.isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)"};
+    props.$isPaid ? "var(--color-green-100)" : "var(--color-yellow-100)"};
+  color: ${(props) => (props.$isPaid ? "var(--color-green-700)" : "var(--color-yellow-700)")};
 
   & p:last-child {
     text-transform: uppercase;
@@ -100,11 +99,7 @@ const Footer = styled.footer`
 `;
 
 // A purely presentational component
-function BookingDataBox({
-  booking,
-}: {
-  booking: IBookingData<ICabinData, IGuestData>;
-}) {
+function BookingDataBox({ booking }: { booking: IBookingData<ICabinData, IGuestData> }) {
   const {
     created_at,
     startDate,
@@ -117,14 +112,8 @@ function BookingDataBox({
     hasBreakfast,
     observations,
     isPaid,
-    guestId: {
-      fullName: guestName,
-      email,
-      nationality,
-      countryFlag,
-      nationalID,
-    },
-    cabinId: { name: cabinName },
+    guests: { fullName: guestName, email, nationality, countryFlag, nationalID },
+    cabins: { name: cabinName },
   } = booking;
 
   return (
@@ -139,18 +128,14 @@ function BookingDataBox({
 
         <p>
           {format(new Date(startDate), "EEE, MMM dd yyyy")} (
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
+          {isToday(new Date(startDate)) ? "Today" : formatDistanceFromNow(startDate)}) &mdash;{" "}
+          {format(new Date(endDate), "EEE, MMM dd yyyy")}
         </p>
       </Header>
 
       <Section>
         <Guest>
-          {countryFlag && (
-            <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
-          )}
+          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${nationality}`} />}
           <p>
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>
@@ -161,9 +146,7 @@ function BookingDataBox({
         </Guest>
 
         {observations && (
-          <DataItem
-            icon={<HiOutlineChatBubbleBottomCenterText />}
-            label="Observations">
+          <DataItem icon={<HiOutlineChatBubbleBottomCenterText />} label="Observations">
             {observations}
           </DataItem>
         )}
@@ -172,14 +155,12 @@ function BookingDataBox({
           {hasBreakfast ? "Yes" : "No"}
         </DataItem>
 
-        <Price isPaid={isPaid}>
+        <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
             {formatCurrency(totalPrice)}
 
             {hasBreakfast &&
-              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice
-              )} breakfast)`}
+              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(extrasPrice)} breakfast)`}
           </DataItem>
 
           <p>{isPaid ? "Paid" : "Will pay at property"}</p>

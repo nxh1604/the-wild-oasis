@@ -26,8 +26,10 @@ declare interface IBookingData<CabinType, GuestType> {
   status: "unconfirmed" | "checked-out" | "checked-in";
   isPaid: boolean;
   observations: string;
-  cabinId: CabinType;
-  guestId: GuestType;
+  cabinId: number;
+  guestId: number;
+  cabins: CabinType;
+  guests: GuestType;
   hasBreakfast: boolean;
 }
 

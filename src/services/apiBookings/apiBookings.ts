@@ -1,23 +1,24 @@
-import { PostgrestResponse } from "@supabase/supabase-js";
+import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
 import { getToday } from "../../utils/helpers";
 import supabase from "../supabase";
 
 export const getAllBookings = async () => {
   const { data, error } = (await supabase.from("bookings").select(`
     *,
-    cabinId (
-      *
+    cabins (
+      name
     ),
-    guestId (
-      *
+    guests (
+      fullName,email
     )
-  `)) as PostgrestResponse<IBookingData<ICabinData, IGuestData>>;
+  `)) as PostgrestResponse<
+    IBookingData<Pick<ICabinData, "name">, Pick<IGuestData, "fullName" | "email">>
+  >;
 
   if (error) {
     console.error(error);
     throw new Error("Bookings not found");
   }
-
   return data;
 };
 
@@ -26,14 +27,14 @@ export async function getBooking(id: number | string) {
     .from("bookings")
     .select("*, cabins(*), guests(*)")
     .eq("id", id)
-    .single()) as PostgrestResponse<IBookingData<ICabinData, IGuestData>>;
+    .single()) as PostgrestMaybeSingleResponse<IBookingData<ICabinData, IGuestData>>;
 
   if (error) {
     console.error(error);
     throw new Error("Booking not found");
   }
 
-  return data[0];
+  return data;
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
@@ -43,7 +44,7 @@ export async function getBookingsAfterDate(date: Date) {
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
     .lte("created_at", getToday({ end: true }))) as PostgrestResponse<
-    Partial<IBookingData<ICabinData, IGuestData>>
+    Partial<Pick<IBookingData<null, null>, "created_at" | "totalPrice" | "extrasPrice">>
   >;
 
   if (error) {
@@ -62,7 +63,7 @@ export async function getStaysAfterDate(date: Date) {
     .select("*, guests(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday())) as PostgrestResponse<
-    Partial<IBookingData<ICabinData, IGuestData>>
+    Partial<IBookingData<null, Pick<IGuestData, "fullName">>>
   >;
 
   if (error) {
@@ -82,7 +83,7 @@ export async function getStaysTodayActivity() {
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
     )
     .order("created_at")) as PostgrestResponse<
-    Partial<IBookingData<ICabinData, IGuestData>>
+    IBookingData<null, Pick<IGuestData, "fullName" | "nationality" | "countryFlag">>
   >;
 
   // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
@@ -96,10 +97,7 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
-export async function updateBooking(
-  id: number | string,
-  obj: Partial<IBookingData<ICabinData, IGuestData>>
-) {
+export async function updateBooking(id: number | string, obj: Partial<IBookingData<null, null>>) {
   const { data, error } = (await supabase
     .from("bookings")
     .update(obj)

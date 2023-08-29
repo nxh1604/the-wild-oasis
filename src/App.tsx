@@ -25,6 +25,7 @@ import { AppLayout } from "./ui";
 import GlobalStyles from "./styles/GlobalStyles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import BookingDetail from "./features/bookings/BookingDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,16 +42,9 @@ const router = createBrowserRouter(
       <Route element={<AppLayout />}>
         <Route index element={<Navigate to={"/dashboard"} />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route
-          path="bookings"
-          element={<Bookings />}
-          loader={bookingsLoader(queryClient)}
-        />
-        <Route
-          path="cabins"
-          element={<Cabins />}
-          loader={cabinsLoader(queryClient)}
-        />
+        <Route path="bookings" element={<Bookings />} loader={bookingsLoader(queryClient)} />
+        <Route path="bookings/:bookingId" element={<BookingDetail />} />
+        <Route path="cabins" element={<Cabins />} loader={cabinsLoader(queryClient)} />
         <Route path="settings" element={<Settings />} />
         <Route path="users" element={<Users />} />
         <Route path="account" element={<Account />} />
