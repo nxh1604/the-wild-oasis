@@ -12,7 +12,13 @@ import { formatCurrency } from "../../utils/helpers";
 import { ConfirmDelete, Menus, Modal, Table } from "../../ui";
 import { CreateOrUpdateCabinForm } from ".";
 
-const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
+const CabinRow = ({
+  cabin,
+  menuId,
+}: {
+  cabin: ICabinData;
+  menuId: string | number | undefined;
+}): JSX.Element => {
   const { isCreating, createCabin } = useCreateCabin();
   const { isDeleting, deleteCabin } = useDeleteCabin();
 
@@ -64,11 +70,11 @@ const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
         <UpdateCabinModal cabin={cabin} />
         <DeleteCabinModal cabinId={cabinId} /> */}
         <Modal>
-          <Menus width={200}>
-            <Menus.Open menu="cabins">
+          <Menus.Menu>
+            <Menus.Open menuId={menuId}>
               <HiEllipsisVertical />
             </Menus.Open>
-            <Menus.Content menuName="cabins">
+            <Menus.Content menuId={menuId}>
               <Menus.Item onClick={handleDuplicateCabin} disabled={isCreating}>
                 <HiSquare2Stack /> Duplicated Cabin
               </Menus.Item>
@@ -83,19 +89,19 @@ const CabinRow = ({ cabin }: { cabin: ICabinData }): JSX.Element => {
                 </Menus.Item>
               </Modal.Open>
             </Menus.Content>
-          </Menus>
-          <Modal.Window windowName="cabin">
-            <CreateOrUpdateCabinForm cabin={cabin} />
-          </Modal.Window>
-          <Modal.Window windowName="delete">
-            <ConfirmDelete
-              resourceName={"cabin"}
-              disabled={isDeleting}
-              onConfirm={() => {
-                if (cabinId) deleteCabin(cabinId);
-              }}
-            />
-          </Modal.Window>
+            <Modal.Window windowName="cabin">
+              <CreateOrUpdateCabinForm cabin={cabin} />
+            </Modal.Window>
+            <Modal.Window windowName="delete">
+              <ConfirmDelete
+                resourceName={"cabin"}
+                disabled={isDeleting}
+                onConfirm={() => {
+                  if (cabinId) deleteCabin(cabinId);
+                }}
+              />
+            </Modal.Window>
+          </Menus.Menu>
         </Modal>
       </div>
     </Table.Row>

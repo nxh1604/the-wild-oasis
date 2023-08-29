@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { useCabins } from "./hooks";
 
 import CabinRow from "./CabinRow";
-import { Empty, Table } from "../../ui";
+import { Empty, Menus, Table } from "../../ui";
 
 const CabinTable = (): JSX.Element => {
   const { cabins } = useCabins();
@@ -55,20 +55,22 @@ const CabinTable = (): JSX.Element => {
 
   return (
     <Table role="table" columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
-      <Table.Header role="row" as="header">
-        <div></div>
-        <div>cabin</div>
-        <div>capacity</div>
-        <div>price</div>
-        <div>discount</div>
-        <div></div>
-      </Table.Header>
-      <Table.Content
-        data={sortData}
-        render={(cabin: ICabinData) => (
-          <CabinRow cabin={cabin} key={cabin.id} />
-        )}
-      />
+      <Menus width={200}>
+        <Table.Header role="row" as="header">
+          <div></div>
+          <div>cabin</div>
+          <div>capacity</div>
+          <div>price</div>
+          <div>discount</div>
+          <div></div>
+        </Table.Header>
+        <Table.Content
+          data={sortData}
+          render={(cabin: ICabinData) => (
+            <CabinRow cabin={cabin} menuId={cabin.id} key={cabin.id} />
+          )}
+        />
+      </Menus>
     </Table>
   );
 };

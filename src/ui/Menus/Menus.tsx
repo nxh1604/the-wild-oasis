@@ -3,6 +3,8 @@ import React, {
   useState,
   useContext,
   ButtonHTMLAttributes,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
@@ -71,40 +73,38 @@ const StyledButton = styled.button`
 `;
 
 interface IdefaultMenus {
-  menusName: string;
+  menu?: string | number;
   width: number;
   position: null | { x: number; y: number };
   handlePosition: (e: { x: number; y: number }) => void;
+  setMenu: Dispatch<SetStateAction<string | number>>;
   handleClose: () => void;
-  handleOpen: (e: string) => void;
 }
 
 const MenusContext = createContext<IdefaultMenus>({
-  menusName: "",
+  menu: "",
   position: null,
   width: 200,
   handlePosition: () => {},
+  setMenu: () => {},
   handleClose: () => {},
-  handleOpen: () => {},
 });
 
 const Menus = ({
   children,
   width = 200,
 }: React.PropsWithChildren<{ width?: number }>) => {
-  const [menusName, setMenusName] = useState("");
+  const [menu, setMenu] = useState<string | number>("");
   const [position, setPosition] = useState<{ x: number; y: number } | null>(
     null
   );
+
   const handlePosition = (position: { x: number; y: number }) => {
     setPosition(position);
   };
 
-  const handleOpen = (name: string) => {
-    setMenusName(name);
-  };
   const handleClose = () => {
-    setMenusName("");
+    setMenu("");
   };
 
   return (
@@ -112,33 +112,42 @@ const Menus = ({
       value={{
         position,
         handlePosition,
-        menusName,
+        menu,
         handleClose,
-        handleOpen,
+        setMenu,
         width,
       }}>
-      <StyledMenu>{children}</StyledMenu>
+      {children}
     </MenusContext.Provider>
   );
 };
 
+const Menu = ({ children }: React.PropsWithChildren) => {
+  return <StyledMenu>{children}</StyledMenu>;
+};
+
 const Open = ({
   children,
-  menu = "",
+  menuId,
   ...restProps
 }: React.PropsWithChildren<
-  ButtonHTMLAttributes<HTMLButtonElement> & { menu: string }
+  ButtonHTMLAttributes<HTMLButtonElement> & { menuId?: string | number }
 >) => {
   const {
-    handleOpen,
+    setMenu,
+    menu,
     handlePosition,
     width: ModalWidth,
   } = useContext(MenusContext);
+  const handleOpen = (menuId: string | number | undefined) => {
+    menu !== menuId ? setMenu(menuId || "") : setMenu("");
+  };
 
   return (
     <StyledToggle
       {...restProps}
       onClick={(e: React.DragEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         const { width, right, bottom } =
           e.currentTarget.getBoundingClientRect();
         const position = {
@@ -146,7 +155,7 @@ const Open = ({
           y: bottom + 2,
         };
         handlePosition(position);
-        handleOpen(menu);
+        handleOpen(menuId);
       }}>
       {children}
     </StyledToggle>
@@ -155,15 +164,17 @@ const Open = ({
 
 const Content = ({
   children,
-  menuName,
+  menuId,
   ...restProps
 }: React.PropsWithChildren<
-  React.RefAttributes<HTMLUListElement> & { menuName: string }
+  React.RefAttributes<HTMLUListElement> & {
+    menuId: string | number | undefined;
+  }
 >) => {
-  const { menusName, position, width, handleClose } = useContext(MenusContext);
-  const { ref } = useClickOutSide<HTMLUListElement>(handleClose);
+  const { menu, position, width, handleClose } = useContext(MenusContext);
+  const { ref } = useClickOutSide<HTMLUListElement>(handleClose, false);
 
-  if (menusName !== menuName || !position) return null;
+  if (menu !== menuId || !position) return null;
 
   return createPortal(
     <StyledList
@@ -184,7 +195,7 @@ const Item = ({
 }: React.PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) => {
   return <StyledButton {...restProps}>{children}</StyledButton>;
 };
-
+Menus.Menu = Menu;
 Menus.Open = Open;
 Menus.Content = Content;
 Menus.Item = Item;

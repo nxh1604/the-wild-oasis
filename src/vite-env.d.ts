@@ -6,9 +6,9 @@ declare interface ICabinData {
   id?: number;
   created_at?: Date;
   name: string;
-  regularPrice: number | "";
-  maxCapacity: number | "";
-  discount: number | "";
+  regularPrice: number;
+  maxCapacity: number;
+  discount: number;
   description: string;
   image: string | File;
 }

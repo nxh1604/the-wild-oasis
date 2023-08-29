@@ -3,8 +3,15 @@ import { format, isToday } from "date-fns";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { Table, Tag } from "../../ui";
-import { guests } from "../../data/data-guests";
+import { Menus, Table, Tag } from "../../ui";
+
+import {
+  HiCheckCircle,
+  HiEllipsisVertical,
+  HiEye,
+  HiMiniTrash,
+  HiXCircle,
+} from "react-icons/hi2";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -51,7 +58,6 @@ function BookingRow({
 }: {
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
-  console.log(guests);
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -83,6 +89,25 @@ function BookingRow({
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Menus.Menu>
+        <Menus.Open menuId={bookingId}>
+          <HiEllipsisVertical />
+        </Menus.Open>
+        <Menus.Content menuId={bookingId}>
+          <Menus.Item>
+            <HiEye /> Booking details
+          </Menus.Item>
+          <Menus.Item>
+            <HiCheckCircle /> Checked-in
+          </Menus.Item>
+          <Menus.Item>
+            <HiXCircle /> Checked-out
+          </Menus.Item>
+          <Menus.Item>
+            <HiMiniTrash /> Remove booking
+          </Menus.Item>
+        </Menus.Content>
+      </Menus.Menu>
     </Table.Row>
   );
 }
