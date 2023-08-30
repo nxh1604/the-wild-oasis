@@ -5,8 +5,13 @@ export const useUpdateCabin = () => {
   const queryClient = useQueryClient();
 
   const { mutate: updateCabin, isLoading: isUpdating } = useMutation({
-    mutationFn: ({ updatedCabin, updateId }: { updatedCabin: ICabinData; updateId: number }) =>
-      createOrUpdateCabin(updatedCabin, updateId),
+    mutationFn: ({
+      updatedCabin,
+      updateId,
+    }: {
+      updatedCabin: ICabinData;
+      updateId: number;
+    }) => createOrUpdateCabin(updatedCabin, updateId),
     onSuccess: async () => {
       alert("Cabin successfully edited");
       await queryClient.invalidateQueries({

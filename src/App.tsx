@@ -19,8 +19,9 @@ import {
 
 import { loader as cabinsLoader } from "./pages/Cabins/Loader";
 import { loader as bookingsLoader } from "./pages/Bookings/loader";
+import { loader as bookingLoader } from "./features/bookings/BookingDetail";
 
-import { AppLayout } from "./ui";
+import { AppLayout, Empty } from "./ui";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -42,9 +43,24 @@ const router = createBrowserRouter(
       <Route element={<AppLayout />}>
         <Route index element={<Navigate to={"/dashboard"} />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="bookings" element={<Bookings />} loader={bookingsLoader(queryClient)} />
-        <Route path="bookings/:bookingId" element={<BookingDetail />} />
-        <Route path="cabins" element={<Cabins />} loader={cabinsLoader(queryClient)} />
+        <Route path="bookings">
+          <Route
+            index
+            element={<Bookings />}
+            loader={bookingsLoader(queryClient)}
+          />
+          <Route
+            path=":bookingId"
+            element={<BookingDetail />}
+            errorElement={<Empty resource="booking" />}
+            loader={bookingLoader(queryClient)}
+          />
+        </Route>
+        <Route
+          path="cabins"
+          element={<Cabins />}
+          loader={cabinsLoader(queryClient)}
+        />
         <Route path="settings" element={<Settings />} />
         <Route path="users" element={<Users />} />
         <Route path="account" element={<Account />} />

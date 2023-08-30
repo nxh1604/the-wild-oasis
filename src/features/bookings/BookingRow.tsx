@@ -5,8 +5,15 @@ import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { Menus, Table, Tag } from "../../ui";
 
-import { HiCheckCircle, HiEllipsisVertical, HiEye, HiMiniTrash, HiXCircle } from "react-icons/hi2";
+import {
+  HiCheckCircle,
+  HiEllipsisVertical,
+  HiEye,
+  HiMiniTrash,
+  HiXCircle,
+} from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { useUpdateBooking } from "./hooks/useUpdateBooking";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -54,6 +61,7 @@ function BookingRow({
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
   const navigate = useNavigate();
+  const { updateBooking, isUpdating } = useUpdateBooking();
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -71,8 +79,10 @@ function BookingRow({
 
       <Stacked>
         <span>
-          {isToday(new Date(startDate)) ? "Today" : formatDistanceFromNow(startDate)} &rarr;{" "}
-          {numNights} night stay
+          {isToday(new Date(startDate))
+            ? "Today"
+            : formatDistanceFromNow(startDate)}{" "}
+          &rarr; {numNights} night stay
         </span>
         <span>
           {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
@@ -91,17 +101,29 @@ function BookingRow({
           <Menus.Item
             onClick={() => {
               navigate(`${bookingId}`);
-            }}
-          >
+            }}>
             <HiEye /> Booking details
           </Menus.Item>
           {status === "unconfirmed" && (
-            <Menus.Item>
+            <Menus.Item
+              disabled={isUpdating}
+              onClick={() => {
+                updateBooking({
+                  bookingId,
+                  bookingUpdate: { status: "checked-in" },
+                });
+              }}>
               <HiCheckCircle /> Checked-in
             </Menus.Item>
           )}
           {status === "checked-in" && (
-            <Menus.Item>
+            <Menus.Item
+              onClick={() => {
+                updateBooking({
+                  bookingId,
+                  bookingUpdate: { status: "checked-out" },
+                });
+              }}>
               <HiXCircle /> Checked-out
             </Menus.Item>
           )}

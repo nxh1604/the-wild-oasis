@@ -16,8 +16,8 @@ declare interface ICabinData {
 declare interface IBookingData<CabinType, GuestType> {
   id: number;
   created_at: Date;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   numNights: number;
   numGuests: number;
   cabinPrice: number;

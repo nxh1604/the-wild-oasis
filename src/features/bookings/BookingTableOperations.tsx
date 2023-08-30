@@ -7,9 +7,9 @@ function BookingTableOperations() {
         field="status"
         options={[
           { value: "all", label: "All" },
-          { value: "checked-out", label: "Checked out" },
-          { value: "checked-in", label: "Checked in" },
           { value: "unconfirmed", label: "Unconfirmed" },
+          { value: "checked-in", label: "Checked in" },
+          { value: "checked-out", label: "Checked out" },
         ]}
       />
 

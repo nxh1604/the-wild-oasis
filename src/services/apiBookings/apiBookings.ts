@@ -1,9 +1,43 @@
-import { PostgrestMaybeSingleResponse, PostgrestResponse } from "@supabase/supabase-js";
+import {
+  PostgrestMaybeSingleResponse,
+  PostgrestResponse,
+} from "@supabase/supabase-js";
 import { getToday } from "../../utils/helpers";
 import supabase from "../supabase";
+import { PAGE_SIZE } from "../../utils/constant";
 
-export const getAllBookings = async () => {
-  const { data, error } = (await supabase.from("bookings").select(`
+export const getAllBookings = async ({
+  filters,
+  sort,
+  page,
+}: {
+  filters:
+    | ""
+    | null
+    | false
+    | Array<{
+        field: string;
+        value: unknown;
+        method:
+          | "eq"
+          | "gt"
+          | "lt"
+          | "lte"
+          | "gte"
+          | "like"
+          | "ilike"
+          | "is"
+          | "in"
+          | "neq";
+      }>;
+  sort: {
+    field: string;
+    direction: string;
+  };
+  page: number;
+}) => {
+  let query = supabase.from("bookings").select(
+    `
     *,
     cabins (
       name
@@ -11,15 +45,44 @@ export const getAllBookings = async () => {
     guests (
       fullName,email
     )
-  `)) as PostgrestResponse<
-    IBookingData<Pick<ICabinData, "name">, Pick<IGuestData, "fullName" | "email">>
+  `,
+    { count: "exact" }
+  );
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  if (filters) {
+    filters.forEach((filter) => {
+      if (!query[filter.method]) throw new Error("invalid filther method");
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      query = query[filter.method](filter.field, filter.value);
+    });
+  }
+
+  if (sort) {
+    query = query.order(sort.field, {
+      ascending: sort.direction === "asc",
+    });
+  }
+
+  if (page) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = (await query) as PostgrestResponse<
+    IBookingData<
+      Pick<ICabinData, "name">,
+      Pick<IGuestData, "fullName" | "email">
+    >
   >;
 
   if (error) {
     console.error(error);
     throw new Error("Bookings not found");
   }
-  return data;
+  return { data, count };
 };
 
 export async function getBooking(id: number | string) {
@@ -27,7 +90,9 @@ export async function getBooking(id: number | string) {
     .from("bookings")
     .select("*, cabins(*), guests(*)")
     .eq("id", id)
-    .single()) as PostgrestMaybeSingleResponse<IBookingData<ICabinData, IGuestData>>;
+    .single()) as PostgrestMaybeSingleResponse<
+    IBookingData<ICabinData, IGuestData>
+  >;
 
   if (error) {
     console.error(error);
@@ -44,7 +109,12 @@ export async function getBookingsAfterDate(date: Date) {
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
     .lte("created_at", getToday({ end: true }))) as PostgrestResponse<
-    Partial<Pick<IBookingData<null, null>, "created_at" | "totalPrice" | "extrasPrice">>
+    Partial<
+      Pick<
+        IBookingData<null, null>,
+        "created_at" | "totalPrice" | "extrasPrice"
+      >
+    >
   >;
 
   if (error) {
@@ -83,7 +153,10 @@ export async function getStaysTodayActivity() {
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
     )
     .order("created_at")) as PostgrestResponse<
-    IBookingData<null, Pick<IGuestData, "fullName" | "nationality" | "countryFlag">>
+    IBookingData<
+      null,
+      Pick<IGuestData, "fullName" | "nationality" | "countryFlag">
+    >
   >;
 
   // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
@@ -97,7 +170,10 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
-export async function updateBooking(id: number | string, obj: Partial<IBookingData<null, null>>) {
+export async function updateBooking(
+  id: number | string,
+  obj: Partial<IBookingData<null, null>>
+) {
   const { data, error } = (await supabase
     .from("bookings")
     .update(obj)

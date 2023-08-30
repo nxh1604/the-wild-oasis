@@ -63,6 +63,8 @@ const Filter = ({
           active={`${active === option.value}`}
           disabled={active === option.value}
           onClick={() => {
+            searchParams.set("page", "1");
+            setSearchParms(searchParams);
             handleClick(option.value);
           }}>
           {option.label}
