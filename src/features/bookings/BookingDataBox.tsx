@@ -101,8 +101,12 @@ const Footer = styled.footer`
 
 // A purely presentational component
 function BookingDataBox({
+  breakfastPrice = 0,
+  breakfast = false,
   booking,
 }: {
+  breakfastPrice?: number;
+  breakfast?: boolean;
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
   const {
@@ -126,6 +130,12 @@ function BookingDataBox({
     },
     cabins: { name: cabinName },
   } = booking;
+
+  const newTotalPrice = breakfast ? totalPrice + breakfastPrice : totalPrice;
+
+  const newExtraPrice = hasBreakfast ? extrasPrice : breakfastPrice;
+
+  const newHasBreakfast = hasBreakfast || breakfast;
 
   return (
     <StyledBookingDataBox>
@@ -169,16 +179,16 @@ function BookingDataBox({
         )}
 
         <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {hasBreakfast ? "Yes" : "No"}
+          {newHasBreakfast ? "Yes" : "No"}
         </DataItem>
 
         <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
-            {formatCurrency(totalPrice)}
+            {formatCurrency(newTotalPrice)}
 
-            {hasBreakfast &&
+            {newHasBreakfast &&
               ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
-                extrasPrice
+                newExtraPrice
               )} breakfast)`}
           </DataItem>
 

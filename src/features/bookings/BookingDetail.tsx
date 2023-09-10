@@ -12,10 +12,9 @@ import {
   Row,
   Tag,
 } from "../../ui";
-import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useBooking } from "./hooks/useBooking";
-import { QueryClient } from "@tanstack/react-query";
-import { getBooking } from "../../services/apiBookings";
+import { useCheckout } from "../check-in-out/useCheckout";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -24,9 +23,10 @@ const HeadingGroup = styled.div`
 `;
 
 function BookingDetail() {
-  useLoaderData();
   const { bookingId } = useParams();
   const { booking } = useBooking(bookingId);
+  const { updateCheckout, loadingUpdate } = useCheckout();
+  const navigate = useNavigate();
   const moveBack = useMoveBack();
 
   const statusToTagName = {
@@ -52,6 +52,27 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        {booking.status === "unconfirmed" && (
+          <Button onClick={() => navigate(`/bookings/checkin/${bookingId}`)}>
+            Check in
+          </Button>
+        )}
+        {booking.status === "checked-in" && (
+          <Button
+            disabled={loadingUpdate}
+            onClick={() => {
+              if (!bookingId) return;
+
+              updateCheckout(
+                { bookingId },
+                {
+                  onSuccess: () => navigate("/bookings"),
+                }
+              );
+            }}>
+            Check out
+          </Button>
+        )}
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>
@@ -61,14 +82,3 @@ function BookingDetail() {
 }
 
 export default BookingDetail;
-
-export const loader =
-  (queryClient: QueryClient) =>
-  async ({ params }: LoaderFunctionArgs) => {
-    const { bookingId } = params;
-
-    return await queryClient.ensureQueryData({
-      queryKey: ["booking", bookingId],
-      queryFn: () => getBooking(bookingId || "0"),
-    });
-  };

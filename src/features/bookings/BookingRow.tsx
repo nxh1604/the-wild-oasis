@@ -3,7 +3,7 @@ import { format, isToday } from "date-fns";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { Menus, Table, Tag } from "../../ui";
+import { ConfirmDelete, Menus, Modal, Table, Tag } from "../../ui";
 
 import {
   HiCheckCircle,
@@ -13,7 +13,7 @@ import {
   HiXCircle,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import { useUpdateBooking } from "./hooks/useUpdateBooking";
+import { useCheckout } from "../check-in-out/useCheckout";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -60,8 +60,9 @@ function BookingRow({
 }: {
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
+  const { updateCheckout, loadingUpdate } = useCheckout();
   const navigate = useNavigate();
-  const { updateBooking, isUpdating } = useUpdateBooking();
+
   const statusToTagName = {
     unconfirmed: "blue",
     "checked-in": "green",
@@ -94,45 +95,54 @@ function BookingRow({
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
       <Menus.Menu>
-        <Menus.Open menuId={bookingId}>
-          <HiEllipsisVertical />
-        </Menus.Open>
-        <Menus.Content menuId={bookingId}>
-          <Menus.Item
-            onClick={() => {
-              navigate(`${bookingId}`);
-            }}>
-            <HiEye /> Booking details
-          </Menus.Item>
-          {status === "unconfirmed" && (
-            <Menus.Item
-              disabled={isUpdating}
-              onClick={() => {
-                updateBooking({
-                  bookingId,
-                  bookingUpdate: { status: "checked-in" },
-                });
-              }}>
-              <HiCheckCircle /> Checked-in
-            </Menus.Item>
-          )}
-          {status === "checked-in" && (
+        <Modal>
+          <Menus.Open menuId={bookingId}>
+            <HiEllipsisVertical />
+          </Menus.Open>
+          <Menus.Content menuId={bookingId}>
             <Menus.Item
               onClick={() => {
-                updateBooking({
-                  bookingId,
-                  bookingUpdate: { status: "checked-out" },
-                });
+                navigate(`${bookingId}`);
               }}>
-              <HiXCircle /> Checked-out
+              <HiEye /> Booking details
             </Menus.Item>
-          )}
-          {status === "unconfirmed" && (
-            <Menus.Item>
-              <HiMiniTrash /> Remove booking
-            </Menus.Item>
-          )}
-        </Menus.Content>
+            {status === "unconfirmed" && (
+              <Menus.Item onClick={() => navigate(`checkin/${bookingId}`)}>
+                <HiCheckCircle /> Check in
+              </Menus.Item>
+            )}
+            {status === "checked-in" && (
+              <Menus.Item
+                disabled={loadingUpdate}
+                onClick={() =>
+                  updateCheckout(
+                    { bookingId },
+                    {
+                      onSuccess: () => {
+                        navigate("/bookings");
+                      },
+                    }
+                  )
+                }>
+                <HiXCircle /> Check out
+              </Menus.Item>
+            )}
+            {status === "unconfirmed" && (
+              <Modal.Open openWindowName="removeBooking">
+                <Menus.Item>
+                  <HiMiniTrash /> Remove booking
+                </Menus.Item>
+              </Modal.Open>
+            )}
+          </Menus.Content>
+          <Modal.Window windowName="removeBooking">
+            <ConfirmDelete
+              resourceName="booking"
+              onConfirm={() => undefined}
+              disabled={true}
+            />
+          </Modal.Window>
+        </Modal>
       </Menus.Menu>
     </Table.Row>
   );

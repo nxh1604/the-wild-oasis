@@ -1,6 +1,8 @@
 import Account from "./Account";
+import BookingPage from "./Booking";
 import Bookings from "./Bookings";
-import { Cabins } from "./Cabins";
+import Cabins from "./Cabins";
+import CheckinPage from "./Checkin";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import PageNotFound from "./PageNotFound";
@@ -16,4 +18,6 @@ export {
   PageNotFound,
   Settings,
   Users,
+  BookingPage,
+  CheckinPage,
 };

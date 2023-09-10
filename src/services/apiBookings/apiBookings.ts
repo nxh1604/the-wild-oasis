@@ -179,7 +179,7 @@ export async function updateBooking(
     .update(obj)
     .eq("id", id)
     .select()
-    .single()) as PostgrestResponse<null>;
+    .single()) as PostgrestMaybeSingleResponse<IBookingData<null, null>>;
 
   if (error) {
     console.error(error);
