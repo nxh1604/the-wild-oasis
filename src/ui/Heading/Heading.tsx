@@ -1,6 +1,6 @@
 import { css, styled } from "styled-components";
 
-const Heading = styled.h1<{ as: "h1" | "h2" | "h3" }>`
+const Heading = styled.h1<{ as: "h1" | "h2" | "h3" | "h4" }>`
   ${(prop) =>
     prop.as === "h1"
       ? css`
@@ -12,9 +12,15 @@ const Heading = styled.h1<{ as: "h1" | "h2" | "h3" }>`
           font-size: 2.3rem;
           font-weight: 600;
         `
-      : css`
+      : prop.as === "h3"
+      ? css`
           font-size: 2rem;
           font-weight: 500;
+        `
+      : css`
+          font-size: 3rem;
+          font-weight: 600;
+          text-align: center;
         `}
 `;
 

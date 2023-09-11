@@ -13,6 +13,7 @@ import Filter from "./Filter/Filter";
 import Flag from "./Flag";
 import Form from "./Form";
 import FormRow from "./FormRow";
+import { FormRowVertical } from "./FormRowVeritical";
 import Header from "./Header";
 import Heading from "./Heading";
 import Input from "./Input";
@@ -60,4 +61,5 @@ export {
   StyledErrorFallback,
   SortBy,
   TableOperations,
+  FormRowVertical,
 };

@@ -14,6 +14,7 @@ import {
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
+import { useDeleteBooking } from "./hooks/useDeleteBooking";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -60,6 +61,7 @@ function BookingRow({
 }: {
   booking: IBookingData<ICabinData, IGuestData>;
 }) {
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const { updateCheckout, loadingUpdate } = useCheckout();
   const navigate = useNavigate();
 
@@ -138,8 +140,11 @@ function BookingRow({
           <Modal.Window windowName="removeBooking">
             <ConfirmDelete
               resourceName="booking"
-              onConfirm={() => undefined}
-              disabled={true}
+              onConfirm={() => {
+                if (!bookingId) return;
+                deleteBooking(bookingId);
+              }}
+              disabled={isDeleting}
             />
           </Modal.Window>
         </Modal>

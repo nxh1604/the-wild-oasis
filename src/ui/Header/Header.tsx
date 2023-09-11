@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import Logout from "../../features/authentication/Logout";
 
 const StyledHeader = styled.header`
   padding: 3.2rem 4rem;
@@ -8,7 +9,11 @@ const StyledHeader = styled.header`
 `;
 
 const Header = (): JSX.Element => {
-  return <StyledHeader>Header</StyledHeader>;
+  return (
+    <StyledHeader>
+      <Logout />
+    </StyledHeader>
+  );
 };
 
 export default Header;

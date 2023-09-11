@@ -10,11 +10,12 @@ import ButtonText from "../../ui/ButtonText";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "../bookings/hooks/useBooking";
 import { useNavigate, useParams } from "react-router-dom";
-import { Checkbox, Empty } from "../../ui";
+import { Checkbox, ConfirmDelete, Empty, Modal } from "../../ui";
 import { useState } from "react";
 import { useCheckin } from "./useCheckin";
 import { formatCurrency } from "../../utils/helpers";
 import { useSettings } from "../settings/hooks";
+import { useDeleteBooking } from "../bookings/hooks/useDeleteBooking";
 
 const Box = styled.div`
   /* Box */
@@ -29,7 +30,7 @@ function CheckinBooking() {
 
   const [confirmPaid, setConfirmPaid] = useState<boolean>(false);
   const [hasBreakfast, setHasBreakfast] = useState<boolean>(false);
-
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const { updateCheckin, loadingUpdate } = useCheckin();
   const { booking } = useBooking(bookingId);
   const { settings } = useSettings();
@@ -50,6 +51,7 @@ function CheckinBooking() {
         {
           bookingId,
           breakfast: {
+            isPaid: true,
             hasBreakfast,
             extrasPrice: optionalBreakfast,
             totalPrice: booking.totalPrice + optionalBreakfast,
@@ -127,6 +129,27 @@ function CheckinBooking() {
           disabled={(!booking.isPaid && !confirmPaid) || loadingUpdate}>
           Check in booking #{bookingId}
         </Button>
+        <Modal>
+          <Modal.Open openWindowName="deleting-booking">
+            <Button disabled={loadingUpdate} variation="danger">
+              Delete booking #{bookingId}
+            </Button>
+          </Modal.Open>
+          <Modal.Window windowName="deleting-booking">
+            <ConfirmDelete
+              disabled={isDeleting}
+              onConfirm={() => {
+                if (!bookingId) return;
+                deleteBooking(bookingId, {
+                  onSuccess: () => {
+                    navigate("/bookings");
+                  },
+                });
+              }}
+              resourceName={`booking #${bookingId}`}
+            />
+          </Modal.Window>
+        </Modal>
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

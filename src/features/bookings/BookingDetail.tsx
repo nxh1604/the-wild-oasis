@@ -7,14 +7,17 @@ import {
   Button,
   ButtonGroup,
   ButtonText,
+  ConfirmDelete,
   Empty,
   Heading,
+  Modal,
   Row,
   Tag,
 } from "../../ui";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBooking } from "./hooks/useBooking";
 import { useCheckout } from "../check-in-out/useCheckout";
+import { useDeleteBooking } from "./hooks/useDeleteBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -25,6 +28,7 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const { bookingId } = useParams();
   const { booking } = useBooking(bookingId);
+  const { deleteBooking, isDeleting } = useDeleteBooking();
   const { updateCheckout, loadingUpdate } = useCheckout();
   const navigate = useNavigate();
   const moveBack = useMoveBack();
@@ -53,9 +57,34 @@ function BookingDetail() {
 
       <ButtonGroup>
         {booking.status === "unconfirmed" && (
-          <Button onClick={() => navigate(`/bookings/checkin/${bookingId}`)}>
-            Check in
-          </Button>
+          <>
+            <Button
+              disabled={isDeleting || loadingUpdate}
+              onClick={() => navigate(`/bookings/checkin/${bookingId}`)}>
+              Check in
+            </Button>
+            <Modal>
+              <Modal.Open openWindowName="deleting-booking">
+                <Button disabled={loadingUpdate} variation="danger">
+                  Delete booking #{bookingId}
+                </Button>
+              </Modal.Open>
+              <Modal.Window windowName="deleting-booking">
+                <ConfirmDelete
+                  disabled={isDeleting}
+                  onConfirm={() => {
+                    if (!bookingId) return;
+                    deleteBooking(bookingId, {
+                      onSuccess: () => {
+                        navigate("/bookings");
+                      },
+                    });
+                  }}
+                  resourceName={`booking #${bookingId}`}
+                />
+              </Modal.Window>
+            </Modal>
+          </>
         )}
         {booking.status === "checked-in" && (
           <Button
@@ -66,7 +95,7 @@ function BookingDetail() {
               updateCheckout(
                 { bookingId },
                 {
-                  onSuccess: () => navigate("/bookings"),
+                  onSettled: () => navigate(-1),
                 }
               );
             }}>
