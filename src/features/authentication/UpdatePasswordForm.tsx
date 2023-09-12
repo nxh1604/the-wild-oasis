@@ -3,29 +3,34 @@ import Button from "../../ui/Button/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-
-import { useUpdateUser } from "./useUpdateUser";
+import { useUpdateUser } from "./hooks/useUpdateUser";
+import { StyledGroup } from "./SignupForm";
+import { ButtonGroup } from "../../ui";
 
 function UpdatePasswordForm() {
-  const { register, handleSubmit, formState, getValues, reset } = useForm();
+  const { register, handleSubmit, formState, getValues, reset } = useForm<{
+    password: string;
+    passwordConfirm: string;
+  }>();
   const { errors } = formState;
 
-  const { updateUser, isUpdating } = useUpdateUser();
+  const { updateUser, isLoading } = useUpdateUser();
 
-  function onSubmit({ password }) {
-    updateUser({ password }, { onSuccess: reset });
+  function onSubmit({ password }: { password: string }) {
+    updateUser({ password }, { onSuccess: () => reset() });
   }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow
         label="Password (min 8 characters)"
-        error={errors?.password?.message}>
+        errorMessage={errors?.password?.message}>
         <Input
           type="password"
           id="password"
           autoComplete="current-password"
-          disabled={isUpdating}
+          disabled={isLoading}
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -38,12 +43,12 @@ function UpdatePasswordForm() {
 
       <FormRow
         label="Confirm password"
-        error={errors?.passwordConfirm?.message}>
+        errorMessage={errors?.passwordConfirm?.message}>
         <Input
           type="password"
           autoComplete="new-password"
           id="passwordConfirm"
-          disabled={isUpdating}
+          disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
             validate: (value) =>
@@ -52,10 +57,14 @@ function UpdatePasswordForm() {
         />
       </FormRow>
       <FormRow>
-        <Button onClick={reset} type="reset" variation="secondary">
-          Cancel
-        </Button>
-        <Button disabled={isUpdating}>Update password</Button>
+        <StyledGroup>
+          <ButtonGroup>
+            <Button onClick={() => reset()} type="reset" variation="secondary">
+              Cancel
+            </Button>
+            <Button disabled={isLoading}>Update password</Button>
+          </ButtonGroup>
+        </StyledGroup>
       </FormRow>
     </Form>
   );

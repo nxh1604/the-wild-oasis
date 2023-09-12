@@ -111,7 +111,7 @@ function SignupForm() {
 }
 
 export default SignupForm;
-const StyledGroup = styled.div`
+export const StyledGroup = styled.div`
   grid-column-start: 3;
   width: max-content;
   justify-self: flex-start;

@@ -2,7 +2,7 @@ import {
   PostgrestResponse,
   PostgrestSingleResponse,
 } from "@supabase/supabase-js";
-import supabase, { supabaseUrl } from "../supabase";
+import supabase, { supabaseUrl } from "../supaBase";
 import { v4 as uuidv4 } from "uuid";
 
 export const getCabins = async (): Promise<ICabinData[]> => {
@@ -21,7 +21,7 @@ export const createOrUpdateCabin = async (
   cabin: ICabinData,
   updateId: number | null = null
 ) => {
-  // https://tjfplbwsoorynsirqihu.supabase.co/storage/v1/object/public/Cabins/cabin-001.jpg
+  // https://tjfplbwsoorynsirqihu.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
 
   const imageName =
     typeof cabin.image === "string"
@@ -32,7 +32,7 @@ export const createOrUpdateCabin = async (
   const imagePath =
     typeof cabin.image === "string"
       ? cabin.image
-      : `${supabaseUrl}/storage/v1/object/public/Cabins/${imageName}`;
+      : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
   const cabinsTable = supabase.from("cabins");
 
@@ -66,7 +66,7 @@ export const createOrUpdateCabin = async (
 
   if (typeof cabin.image !== "string" && imageName) {
     const { error: storageError } = await supabase.storage
-      .from("Cabins")
+      .from("cabin-images")
       .upload(imageName, cabin.image);
 
     if (storageError) {
