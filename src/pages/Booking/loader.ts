@@ -6,7 +6,6 @@ export const loader =
   (queryClient: QueryClient) =>
   async ({ params }: LoaderFunctionArgs) => {
     const { bookingId } = params;
-
     if (!bookingId) return null;
 
     await queryClient.ensureQueryData({

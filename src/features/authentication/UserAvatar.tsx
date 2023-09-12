@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import styled from "styled-components";
+import { useUser } from "./hooks/useUser";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -19,3 +21,23 @@ const Avatar = styled.img`
   border-radius: 50%;
   outline: 2px solid var(--color-grey-100);
 `;
+
+const UserAvatar = (): JSX.Element => {
+  const { user } = useUser();
+
+  if (!user) return <p>No user</p>;
+
+  const { fullName, avatar } = user.user_metadata;
+
+  return (
+    <StyledUserAvatar>
+      <Avatar
+        src={avatar || "/public/default-user.jpg"}
+        alt={`avatar of user ${fullName}`}
+      />
+      <span>{fullName}</span>
+    </StyledUserAvatar>
+  );
+};
+
+export default UserAvatar;

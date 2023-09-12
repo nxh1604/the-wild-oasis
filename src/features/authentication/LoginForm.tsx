@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { Button, Form, FormRowVertical, Input, SpinnerMini } from "../../ui";
-import { useLogin } from "./useLogin";
+import { useLogin } from "./hooks/useLogin";
 
 function LoginForm() {
   const [email, setEmail] = useState("nxh1604@example.com");

@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
-import { AppLayout, Empty } from "./ui";
+import { AppLayout, Empty, ProtectedRoute } from "./ui";
 import GlobalStyles from "./styles/GlobalStyles";
 
 import {
@@ -29,7 +29,6 @@ import { bookingLoader } from "./pages/Booking";
 import { checkinPageLoader } from "./pages/Checkin";
 import { cabinsPageLoader } from "./pages/Cabins";
 import { bookingsPageLoader } from "./pages/Bookings";
-import ProtectedRoute from "./ui/ProtectedRoute/ProtectedRoute";
 
 const queryClient = new QueryClient({
   defaultOptions: {

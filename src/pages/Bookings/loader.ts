@@ -3,7 +3,11 @@ import { createSearchParams, defer } from "react-router-dom";
 import { getAllBookings } from "../../services/apiBookings";
 
 export const loader = (queryClient: QueryClient) => () => {
-  const queryString = window.location.search;
+  const queryString =
+    window.location.pathname === "/bookings"
+      ? window.location.search
+      : "?page=1&status=all";
+
   const searchParams = createSearchParams(queryString);
   // filter
   const filters = !!searchParams.get("status") &&

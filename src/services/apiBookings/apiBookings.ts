@@ -70,7 +70,6 @@ export const getAllBookings = async ({
 
     query = query.range(from, to);
   }
-
   const { data, error, count } = (await query) as PostgrestResponse<
     IBookingData<
       Pick<ICabinData, "name">,
@@ -82,6 +81,7 @@ export const getAllBookings = async ({
     console.error(error);
     throw new Error("Bookings not found");
   }
+
   return { data, count };
 };
 
