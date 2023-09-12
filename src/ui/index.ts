@@ -5,6 +5,7 @@ import ButtonIcon from "./ButtonIcon";
 import ButtonText from "./ButtonText";
 import Checkbox from "./Checkbox";
 import ConfirmDelete from "./ConfirmDelete";
+import DarkModeToggle from "./DarkModeToggle";
 import DataItem from "./DataItem";
 import Empty from "./Empty";
 import StyledErrorFallback from "./ErrorFallback";
@@ -64,4 +65,5 @@ export {
   TableOperations,
   FormRowVertical,
   ProtectedRoute,
+  DarkModeToggle,
 };

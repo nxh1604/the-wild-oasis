@@ -29,6 +29,7 @@ import { bookingLoader } from "./pages/Booking";
 import { checkinPageLoader } from "./pages/Checkin";
 import { cabinsPageLoader } from "./pages/Cabins";
 import { bookingsPageLoader } from "./pages/Bookings";
+import { DarkModeProvider } from "./contexts/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,14 +87,14 @@ const router = createBrowserRouter(
 
 function App() {
   return (
-    <>
+    <DarkModeProvider>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
         <GlobalStyles />
         <RouterProvider router={router} />
         <Toaster />
       </QueryClientProvider>
-    </>
+    </DarkModeProvider>
   );
 }
 

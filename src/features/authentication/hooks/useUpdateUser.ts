@@ -14,11 +14,11 @@ export const useUpdateUser = () => {
       fullName?: string;
       avatar?: File;
     }) => updateUserApi({ password, fullName, avatar }),
-    onSuccess: async (user) => {
-      console.log(user);
+    onSuccess: (data) => {
+      const { user } = data;
 
       toast.success("update success");
-      await queryClient.invalidateQueries(["user"]);
+      queryClient.setQueryData(["user"], user);
     },
     onError: () => {
       toast.error("update error");

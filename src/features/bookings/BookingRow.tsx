@@ -116,16 +116,7 @@ function BookingRow({
             {status === "checked-in" && (
               <Menus.Item
                 disabled={loadingUpdate}
-                onClick={() =>
-                  updateCheckout(
-                    { bookingId },
-                    {
-                      onSuccess: () => {
-                        navigate("/bookings");
-                      },
-                    }
-                  )
-                }>
+                onClick={() => updateCheckout({ bookingId })}>
                 <HiXCircle /> Check out
               </Menus.Item>
             )}
