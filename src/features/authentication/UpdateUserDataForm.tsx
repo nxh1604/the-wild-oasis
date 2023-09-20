@@ -74,7 +74,7 @@ function UpdateUserDataForm() {
             </Button>
             <Button
               disabled={isLoading || (fullName === currentFullName && !avatar)}>
-              Create new user
+              Update user
             </Button>
           </ButtonGroup>
         </StyledGroup>
