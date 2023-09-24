@@ -1,8 +1,8 @@
 import { Suspense } from "react";
-import { Await, useLoaderData } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { Heading, Row, StyledErrorFallback } from "../../ui";
+import { Button, Heading, Row } from "../../ui";
 import { BookingTable, BookingTableOperations } from "../../features/bookings";
 import BookingsSkeleton from "./BookingsSkeleton";
 
@@ -10,20 +10,33 @@ function Bookings() {
   const { bookings } = useLoaderData() as {
     bookings: IBookingData<number, number>[];
   };
+  const navigate = useNavigate();
 
   return (
     <StyledContainer>
-      <Row type="horizontal">
-        <Heading as="h1">All bookings</Heading>
-        <BookingTableOperations />
-      </Row>
-      <Row type="vertical">
-        <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
-          <Await resolve={bookings} errorElement={<StyledErrorFallback />}>
+      <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
+        <Await
+          resolve={bookings}
+          errorElement={
+            <div>
+              <h1>Some thing went wrong! 😥</h1>
+              <br />
+              <p>
+                Go back ? <br />
+                <br />
+                <Button onClick={() => navigate(-1)}>Go back &larr;</Button>
+              </p>
+            </div>
+          }>
+          <Row type="horizontal">
+            <Heading as="h1">All bookings</Heading>
+            <BookingTableOperations />
+          </Row>
+          <Row type="vertical">
             <BookingTable />
-          </Await>
-        </Suspense>
-      </Row>
+          </Row>
+        </Await>
+      </Suspense>
     </StyledContainer>
   );
 }

@@ -3,6 +3,7 @@ import { defer } from "react-router-dom";
 import { getCabins } from "../../services/apiCabins";
 
 export const loader = (queryClient: QueryClient) => () => {
+  console.log("load");
   return defer({
     cabins: queryClient.ensureQueryData({
       queryKey: ["cabins"],

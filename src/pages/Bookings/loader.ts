@@ -25,7 +25,9 @@ export const loader = (queryClient: QueryClient) => () => {
 
   // pagination
 
-  const page = Number(searchParams.get("page")) || 1;
+  const curPage = Number(searchParams.get("page"));
+
+  const page = curPage || 1;
 
   return defer({
     bookings: queryClient.ensureQueryData({

@@ -3,7 +3,7 @@ import {
   PostgrestResponse,
 } from "@supabase/supabase-js";
 import { getToday } from "../../utils/helpers";
-import supabase from "../supabase";
+import supabase from "../supaBase";
 import { PAGE_SIZE } from "../../utils/constant";
 
 export const getAllBookings = async ({
@@ -18,17 +18,7 @@ export const getAllBookings = async ({
     | Array<{
         field: string;
         value: unknown;
-        method:
-          | "eq"
-          | "gt"
-          | "lt"
-          | "lte"
-          | "gte"
-          | "like"
-          | "ilike"
-          | "is"
-          | "in"
-          | "neq";
+        method: "eq" | "gt" | "lt" | "lte" | "gte" | "is" | "neq";
       }>;
   sort: {
     field: string;
@@ -50,11 +40,14 @@ export const getAllBookings = async ({
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   if (filters) {
+    const arrayMethod = ["eq", "gt", "lt", "lte", "gte", "is", "neq"] as const;
     filters.forEach((filter) => {
-      if (!query[filter.method]) throw new Error("invalid filther method");
+      if (!arrayMethod.includes(filter.method))
+        throw new Error("invalid filther method");
+
+      query = query[filter.method](filter.field, filter.value);
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      query = query[filter.method](filter.field, filter.value);
     });
   }
 
@@ -103,7 +96,7 @@ export async function getBooking(id: number | string) {
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
-export async function getBookingsAfterDate(date: Date) {
+export async function getBookingsAfterDate(date: string) {
   const { data, error } = (await supabase
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")

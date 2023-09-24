@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, FormRow, Input, Spinner } from "../../ui";
 import { useSettings, useUpdateSettings } from "./hooks";
+import toast from "react-hot-toast";
 
 function UpdateSettingsForm() {
   const {
@@ -18,7 +19,7 @@ function UpdateSettingsForm() {
 
   if (isLoading) return <Spinner />;
 
-  if (error) alert("Can't get data settings");
+  if (error) toast.error("Can't get data settings");
 
   const handleUpdate = (
     e: React.FocusEvent<HTMLInputElement>,

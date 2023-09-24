@@ -43,9 +43,11 @@ const FilterButton = styled.button<{ active?: "true" | "false" }>`
 const Filter = ({
   field,
   options,
+  resetPage = false,
 }: React.PropsWithChildren<{
   field: string;
   options: Array<{ [T: string]: string }>;
+  resetPage?: boolean;
 }>) => {
   const [searchParams, setSearchParms] = useSearchParams();
   const handleClick = (value: string) => {
@@ -63,8 +65,10 @@ const Filter = ({
           active={`${active === option.value}`}
           disabled={active === option.value}
           onClick={() => {
-            searchParams.set("page", "1");
-            setSearchParms(searchParams);
+            if (resetPage) {
+              searchParams.set("page", "1");
+              setSearchParms(searchParams);
+            }
             handleClick(option.value);
           }}>
           {option.label}

@@ -27,7 +27,9 @@ export const useBookings = () => {
 
   // pagination
 
-  const page = Number(searchParams.get("page")) || 1;
+  const curPage = Number(searchParams.get("page")) || 1;
+
+  const page = curPage <= 0 ? 1 : curPage > PAGE_SIZE ? PAGE_SIZE : curPage;
 
   const { data: { data: bookings, count } = {}, isLoading } = useQuery({
     queryKey: ["bookings", filters, sort, page],
@@ -35,6 +37,8 @@ export const useBookings = () => {
       return getAllBookings({ filters, sort, page });
     },
   });
+
+  if (curPage <= 0) return {};
 
   // prefecthing next page
   if (count && page < count / PAGE_SIZE)

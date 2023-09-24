@@ -11,6 +11,7 @@ function BookingTableOperations() {
           { value: "checked-in", label: "Checked in" },
           { value: "checked-out", label: "Checked out" },
         ]}
+        resetPage={true}
       />
 
       <SortBy
