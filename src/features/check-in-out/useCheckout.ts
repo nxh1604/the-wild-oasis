@@ -19,6 +19,9 @@ export const useCheckout = () => {
       await queryClient.invalidateQueries({
         queryKey: ["bookings"],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ["today-activity"],
+      });
     },
     onError: () => {
       toast.error("failed to checked-out guest");

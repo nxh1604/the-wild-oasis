@@ -13,21 +13,21 @@ function Bookings() {
   const navigate = useNavigate();
 
   return (
-    <StyledContainer>
-      <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
-        <Await
-          resolve={bookings}
-          errorElement={
-            <div>
-              <h1>Some thing went wrong! 😥</h1>
+    <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
+      <Await
+        resolve={bookings}
+        errorElement={
+          <div>
+            <h1>Some thing went wrong! 😥</h1>
+            <br />
+            <p>
+              Go back ? <br />
               <br />
-              <p>
-                Go back ? <br />
-                <br />
-                <Button onClick={() => navigate(-1)}>Go back &larr;</Button>
-              </p>
-            </div>
-          }>
+              <Button onClick={() => navigate(-1)}>Go back &larr;</Button>
+            </p>
+          </div>
+        }>
+        <StyledContainer>
           <Row type="horizontal">
             <Heading as="h1">All bookings</Heading>
             <BookingTableOperations />
@@ -35,9 +35,9 @@ function Bookings() {
           <Row type="vertical">
             <BookingTable />
           </Row>
-        </Await>
-      </Suspense>
-    </StyledContainer>
+        </StyledContainer>
+      </Await>
+    </Suspense>
   );
 }
 

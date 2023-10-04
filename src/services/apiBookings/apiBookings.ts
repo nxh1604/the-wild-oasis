@@ -102,12 +102,7 @@ export async function getBookingsAfterDate(date: string) {
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
     .lte("created_at", getToday({ end: true }))) as PostgrestResponse<
-    Partial<
-      Pick<
-        IBookingData<null, null>,
-        "created_at" | "totalPrice" | "extrasPrice"
-      >
-    >
+    Pick<IBookingData<null, null>, "created_at" | "totalPrice" | "extrasPrice">
   >;
 
   if (error) {
@@ -119,14 +114,14 @@ export async function getBookingsAfterDate(date: string) {
 }
 
 // Returns all STAYS that are were created after the given date
-export async function getStaysAfterDate(date: Date) {
+export async function getStaysAfterDate(date: string) {
   const { data, error } = (await supabase
     .from("bookings")
     // .select('*')
     .select("*, guests(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday())) as PostgrestResponse<
-    Partial<IBookingData<null, Pick<IGuestData, "fullName">>>
+    IBookingData<null, Pick<IGuestData, "fullName">>
   >;
 
   if (error) {
@@ -151,7 +146,6 @@ export async function getStaysTodayActivity() {
       Pick<IGuestData, "fullName" | "nationality" | "countryFlag">
     >
   >;
-
   // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
   // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
   // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))

@@ -95,14 +95,14 @@ function BookingDetail() {
               updateCheckout(
                 { bookingId },
                 {
-                  onSettled: () => navigate(-1),
+                  onSettled: () => navigate(`/bookings`),
                 }
               );
             }}>
             Check out
           </Button>
         )}
-        <Button variation="secondary" onClick={moveBack}>
+        <Button variation="secondary" onClick={() => navigate("/bookings")}>
           Back
         </Button>
       </ButtonGroup>

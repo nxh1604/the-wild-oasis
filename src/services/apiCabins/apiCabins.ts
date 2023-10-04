@@ -17,6 +17,21 @@ export const getCabins = async (): Promise<ICabinData[]> => {
   return data;
 };
 
+// export const getCabinsProperties = async (
+//   properties: Array<Partial<keyof IBookingData<ICabinData, IGuestData>>>
+// ) => {
+//   const { data, error } = (await supabase
+//     .from("cabins")
+//     .select(`${properties.join(",")}`)) as PostgrestResponse<ICabinData>;
+
+//   if (error) {
+//     console.log(error);
+//     throw new Error("Can not get cabins");
+//   }
+
+//   return data;
+// };
+
 export const createOrUpdateCabin = async (
   cabin: ICabinData,
   updateId: number | null = null

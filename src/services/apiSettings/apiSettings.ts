@@ -1,9 +1,11 @@
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import supabase from "../supaBase";
 
-export async function getSettings(): Promise<Partial<ISettingData>> {
-  const { data, error }: PostgrestSingleResponse<Partial<ISettingData>> =
-    await supabase.from("settings").select("*").single();
+export async function getSettings(): Promise<ISettingData> {
+  const { data, error }: PostgrestSingleResponse<ISettingData> = await supabase
+    .from("settings")
+    .select("*")
+    .single();
 
   if (error) {
     console.error(error);

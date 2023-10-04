@@ -59,7 +59,7 @@ function CheckinBooking() {
         },
         {
           onSuccess: () => {
-            navigate("/bookings");
+            navigate(-1);
           },
         }
       );
@@ -70,7 +70,7 @@ function CheckinBooking() {
         },
         {
           onSuccess: () => {
-            navigate("/bookings");
+            navigate(-1);
           },
         }
       );

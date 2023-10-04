@@ -102,10 +102,10 @@ function UpdateSettingsForm() {
       <FormRow>
         <ButtonGroup
           style={{ gridColumnStart: 3, display: "flex", width: "max-content" }}>
-          <Button type="submit">Update setting</Button>
-          <Button type="button" onClick={() => reset()}>
+          <Button type="button" variation="secondary" onClick={() => reset()}>
             Cancel
           </Button>
+          <Button type="submit">Update setting</Button>
         </ButtonGroup>
       </FormRow>
     </Form>
