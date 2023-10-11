@@ -28,7 +28,6 @@ export const loader = (queryClient: QueryClient) => () => {
   const curPage = Number(searchParams.get("page"));
 
   const page = curPage || 1;
-
   return defer({
     bookings: queryClient.ensureQueryData({
       queryKey: ["bookings", filters, sort, page],

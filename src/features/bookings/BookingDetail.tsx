@@ -39,7 +39,7 @@ function BookingDetail() {
     "checked-out": "silver",
   };
 
-  if (!booking) return <Empty resource="booking" />;
+  if (!booking) return <Empty resource={`booking #${bookingId}`} />;
 
   return (
     <>

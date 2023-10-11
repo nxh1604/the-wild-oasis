@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import styled, { css } from "styled-components";
 
 const sizes = {
@@ -55,9 +56,8 @@ const Button = styled.button<{
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
-
-  ${(props) => sizes[props.size]}
-  ${(props) => variations[props.variation]}
+  ${(props) => props.size && sizes[props.size]}
+  ${(props) => props.variation && variations[props.variation]}
 `;
 
 Button.defaultProps = {

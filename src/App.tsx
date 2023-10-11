@@ -30,6 +30,7 @@ import { checkinPageLoader } from "./pages/Checkin";
 import { cabinsPageLoader } from "./pages/Cabins";
 import { bookingsPageLoader } from "./pages/Bookings";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
+import ErrorFallback from "./ui/ErrorFallback/ErrorFallback";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,7 +43,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <>
+    <Route errorElement={<ErrorFallback />}>
       <Route
         element={
           <ProtectedRoute>
@@ -68,7 +69,7 @@ const router = createBrowserRouter(
             element={<CheckinPage />}
             loader={checkinPageLoader(queryClient)}
           />
-          {/* <Route path="checkout/:bookingId" element={<CheckinPage />} /> */}
+          <Route path="checkout/:bookingId" element={<CheckinPage />} />
         </Route>
         <Route
           path="cabins"
@@ -81,7 +82,7 @@ const router = createBrowserRouter(
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
-    </>
+    </Route>
   )
 );
 

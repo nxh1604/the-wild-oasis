@@ -15,7 +15,7 @@ const CabinsSkeletonLoading = (): JSX.Element => {
       </Table.Header>
       <Table.Content
         data={array}
-        render={(data, index) => (
+        render={(_, index) => (
           <Table.Row key={index}>
             <Spinner />
           </Table.Row>
