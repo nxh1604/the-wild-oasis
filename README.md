@@ -1,8 +1,11 @@
 # The Wild Oasis app
 
+This is a project i made by following Jonas react course.
+
 # Language and Tech stacks
 
-front-end using typescript with react framework, react-router-dom, recharts, react-hook-form
+front-end using typescript with react framework, react-router-dom, recharts, react-hook-form.
+
 back-end and database using supabase
 
 # Decsription
