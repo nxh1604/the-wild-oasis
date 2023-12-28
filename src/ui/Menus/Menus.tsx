@@ -85,6 +85,7 @@ const MenusContext = createContext<IdefaultMenus>({
   menu: "",
   position: null,
   width: 200,
+  // dunng` de position modal menu ngay ben duoi' phan tu? click
   handlePosition: () => {},
   setMenu: () => {},
   handleClose: () => {},
@@ -149,8 +150,10 @@ const Open = ({
       onClick={(e: React.DragEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         const { width, right, bottom } =
+          // lay' tọa độ của element dùng để mở và position modal menus
           e.currentTarget.getBoundingClientRect();
         const position = {
+          // vì sử dụng left style cho x nên - ModalWidth
           x: right - width / 2 - ModalWidth,
           y: bottom + 2,
         };
@@ -162,6 +165,7 @@ const Open = ({
   );
 };
 
+// Modal menus
 const Content = ({
   children,
   menuId,

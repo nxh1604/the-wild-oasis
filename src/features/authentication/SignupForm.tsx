@@ -55,6 +55,7 @@ function SignupForm() {
           disabled={isLoading}
           {...register("email", {
             required: "This field is required",
+            // input value phai match pattern => neu khong thi tra? ve error voi message
             pattern: {
               value: /\S+@\S+\.\S/,
               message: "please provide valid email address",
@@ -95,7 +96,6 @@ function SignupForm() {
         />
       </FormRow>
 
-      {/* type is an HTML attribute! */}
       <FormRow>
         <StyledGroup>
           <ButtonGroup>

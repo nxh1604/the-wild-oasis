@@ -13,12 +13,14 @@ const FullPage = styled.div`
   align-items: center;
 `;
 
+// Component kiem tra xem client da~ dang nhap. chua, local storage co' chua data user khong!
 const ProtectedRoute = ({ children }: React.PropsWithChildren) => {
   const navigate = useNavigate();
   // get current user
   const { isAuthenticated, isLoading } = useUser();
 
   useEffect(() => {
+    // neu khong chua data user se quay tro lai trang login
     if (!isLoading && !isAuthenticated) navigate("/login");
   });
   // show loading when get current user
