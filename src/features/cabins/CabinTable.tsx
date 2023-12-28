@@ -7,12 +7,15 @@ import CabinRow from "./CabinRow";
 import { Empty, Menus, Table } from "../../ui";
 
 const CabinTable = (): JSX.Element => {
+  // lấy data cabins từ react-query;
   const { cabins } = useCabins();
+
+  // lấy param, query từ URL
   const [searchParams] = useSearchParams();
 
   if (!cabins?.length) return <Empty resource={"cabins"} />;
 
-  // 1 Filter
+  // 1 Filter data theo query của url
   const filterQuery = searchParams.get("discount") || "all";
 
   let filterData: ICabinData[] | undefined;
@@ -32,26 +35,37 @@ const CabinTable = (): JSX.Element => {
     default:
       filterData = [];
   }
-  // 2 Sort
+  // 2 Sort data theo query url
   const sortQuery = searchParams.get("sort")?.split("-") || ["name", "asc"];
-  const sortType = sortQuery[1] === "asc" ? 1 : -1;
-  const sortKey = sortQuery[0] as
-    | "name"
-    | "maxCapacity"
-    | "discount"
-    | "regularPrice";
-  const sortData = filterData.sort((p, c) => {
-    const prev = p[sortKey];
-    const cur = c[sortKey];
-    if (typeof prev === "string" && typeof cur === "string") {
-      return (
-        prev.localeCompare(cur, "en", {
-          sensitivity: "base",
-        }) * sortType
-      );
-    }
-    return (Number(prev) - Number(cur)) * sortType;
-  });
+  // check co phai co sortQuery[1] theo sau khong => neu khong auto asc
+  const sortType = sortQuery[1] ? (sortQuery[1] === "asc" ? 1 : -1) : 1;
+
+  let sortData: ICabinData[] | [];
+
+  // check xem sort query co nam trong array hay khong => neu khong auto [];
+  if (
+    ["name", "maxCapacity", "discount", "regularPrice"].includes(sortQuery[0])
+  ) {
+    const sortKey = sortQuery[0] as
+      | "name"
+      | "maxCapacity"
+      | "discount"
+      | "regularPrice";
+    sortData = filterData.sort((p, c) => {
+      const prev = p[sortKey];
+      const cur = c[sortKey];
+      if (typeof prev === "string" && typeof cur === "string") {
+        return (
+          prev.localeCompare(cur, "en", {
+            sensitivity: "base",
+          }) * sortType
+        );
+      }
+      return (Number(prev) - Number(cur)) * sortType;
+    });
+  } else {
+    sortData = [];
+  }
 
   return (
     <Table role="table" columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -65,7 +79,9 @@ const CabinTable = (): JSX.Element => {
           <div></div>
         </Table.Header>
         <Table.Content
+          // data la data cua Cabin da qua filter va sort
           data={sortData}
+          // render props dung de pass callback vao component;
           render={(cabin: ICabinData) => (
             <CabinRow cabin={cabin} menuId={cabin.id} key={cabin.id} />
           )}
@@ -76,31 +92,3 @@ const CabinTable = (): JSX.Element => {
 };
 
 export default CabinTable;
-
-// const Table = styled.div`
-//   border: 1px solid var(--color-grey-200);
-//   font-size: 1.4rem;
-//   background-color: var(--color-grey-0);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
-
-// const TableHeader = styled.header`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 2.4rem;
-//   align-items: center;
-
-//   background-color: var(--color-grey-50);
-//   border-bottom: 1px solid var(--color-grey-100);
-//   text-transform: uppercase;
-//   letter-spacing: 0.4px;
-//   font-weight: 600;
-//   color: var(--color-grey-600);
-//   padding: 1.6rem 2.4rem;
-// `;
-
-// const TableContent = styled.ul`
-//   display: flex;
-//   flex-direction: column;
-// `;

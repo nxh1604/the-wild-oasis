@@ -24,6 +24,7 @@ export const signUp = async ({
   return data;
 };
 
+// su dung ham co san trong supa base de log in
 export const login = async ({
   email,
   password,
@@ -36,16 +37,20 @@ export const login = async ({
     password,
   });
 
+  // neu error se throw error cho ben ngoai` ham biet'
   if (error) throw new Error(error.message);
 
   return data;
 };
 
 export const getCurrentUser = async () => {
+  // tim kiem user data tren local storage
   const { data: session } = await supabase.auth.getSession();
 
+  // khong co data user tra ve null
   if (!session.session) return null;
 
+  // co data user se~ fecth user
   const { data, error } = await supabase.auth.getUser();
 
   if (error) throw new Error(error.message);

@@ -43,7 +43,9 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    // root route dung de bat' error o? component con ma ko bat' duoc.
     <Route errorElement={<ErrorFallback />}>
+      {/* route chinh' dung de kiem soat' user, kiem tra authienticate */}
       <Route
         element={
           <ProtectedRoute>
