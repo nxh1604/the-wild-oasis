@@ -2,6 +2,7 @@ import { Button, ButtonGroup, Form, FormRow, Input, Spinner } from "../../ui";
 import { useSettings, useUpdateSettings } from "./hooks";
 import toast from "react-hot-toast";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { StyledGroup } from "../authentication/SignupForm";
 
 function UpdateSettingsForm() {
   const {
@@ -47,9 +48,7 @@ function UpdateSettingsForm() {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow
-        label="Minimum nights/booking"
-        errorMessage={errors.minBookLength?.message}>
+      <FormRow label="Minimum nights/booking" errorMessage={errors.minBookLength?.message}>
         <Input
           disabled={isUpdating}
           defaultValue={minBookLength}
@@ -60,9 +59,7 @@ function UpdateSettingsForm() {
           id="min-nights"
         />
       </FormRow>
-      <FormRow
-        label="Maximum nights/booking"
-        errorMessage={errors.maxBookLength?.message}>
+      <FormRow label="Maximum nights/booking" errorMessage={errors.maxBookLength?.message}>
         <Input
           disabled={isUpdating}
           {...register("maxBookLength", {
@@ -73,9 +70,7 @@ function UpdateSettingsForm() {
           id="max-nights"
         />
       </FormRow>
-      <FormRow
-        label="Maximum guests/booking"
-        errorMessage={errors.maxGuestsPerBooking?.message}>
+      <FormRow label="Maximum guests/booking" errorMessage={errors.maxGuestsPerBooking?.message}>
         <Input
           disabled={isUpdating}
           {...register("maxGuestsPerBooking", {
@@ -86,9 +81,7 @@ function UpdateSettingsForm() {
           id="max-guests"
         />
       </FormRow>
-      <FormRow
-        label="Breakfast price"
-        errorMessage={errors.breakfastPrice?.message}>
+      <FormRow label="Breakfast price" errorMessage={errors.breakfastPrice?.message}>
         <Input
           disabled={isUpdating}
           {...register("breakfastPrice", {
@@ -100,13 +93,14 @@ function UpdateSettingsForm() {
         />
       </FormRow>
       <FormRow>
-        <ButtonGroup
-          style={{ gridColumnStart: 3, display: "flex", width: "max-content" }}>
-          <Button type="button" variation="secondary" onClick={() => reset()}>
-            Cancel
-          </Button>
-          <Button type="submit">Update setting</Button>
-        </ButtonGroup>
+        <StyledGroup>
+          <ButtonGroup>
+            <Button type="button" variation="secondary" onClick={() => reset()}>
+              Cancel
+            </Button>
+            <Button type="submit">Update setting</Button>
+          </ButtonGroup>
+        </StyledGroup>
       </FormRow>
     </Form>
   );

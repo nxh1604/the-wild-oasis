@@ -23,8 +23,12 @@ const Form = styled.form<{ type?: string }>`
         width: 60rem;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 720px) {
         width: 40rem;
+      }
+
+      @media (max-width: 600px) {
+        width: 100%;
       }
     `}
     

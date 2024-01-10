@@ -3,10 +3,8 @@ import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 
-import { useClickOutSide } from "../../hooks";
-
 const StyledModal = styled.div`
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -15,14 +13,18 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
+
+  @media (max-width: 600px) {
+    overflow: scroll;
+    width: 100vw;
+  }
 `;
 
 const Overlay = styled.div`
+  overflow: scroll;
   position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  min-height: 100vh;
+  min-width: 100vw;
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -81,6 +83,8 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const modalPosition = document.getElementById("modal-overlay") as HTMLElement;
+
 const Open = ({
   children,
   openWindowName,
@@ -95,20 +99,20 @@ const Open = ({
 
 const Window = ({ children, windowName }: { children: React.ReactElement; windowName: string }) => {
   const { openModalName, closeModal } = useContext(ModalContext);
-  const { ref: modalRef } = useClickOutSide<HTMLDivElement | null>(closeModal);
+  // const { ref: modalRef } = useClickOutSide<HTMLDivElement | null>(closeModal);
 
   if (openModalName !== windowName) return null;
 
   return createPortal(
-    <Overlay>
-      <StyledModal ref={modalRef}>
+    <Overlay onClick={closeModal}>
+      <StyledModal onClick={(e) => e.stopPropagation()}>
         <Button onClick={closeModal}>
           <HiXMark />
         </Button>
         {cloneElement(children, { closeModal })}
       </StyledModal>
     </Overlay>,
-    document.body
+    modalPosition
   );
 };
 Modal.Open = Open;

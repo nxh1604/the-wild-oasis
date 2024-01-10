@@ -23,7 +23,7 @@ const StyledSidebar = styled.aside<{ $open: boolean }>`
   grid-row: 1 / -1;
   border-right: 1px solid var(--color-grey-100);
   padding: 3.2rem 2.4rem;
-
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
@@ -31,10 +31,9 @@ const StyledSidebar = styled.aside<{ $open: boolean }>`
   @media (max-width: 1280px) {
     ${({ $open }) => !$open && srOnly}
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 9999;
+
+    min-height: 100vh;
+    z-index: 1000;
   }
 `;
 
@@ -58,11 +57,10 @@ const StyledOverLay = styled.div<{ $open: boolean }>`
     ${({ $open }) =>
       $open &&
       css`
+        overflow: scroll;
         position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        min-height: 100vh;
+        min-width: 100vw;
         background-color: var(--backdrop-color);
         backdrop-filter: blur(4px);
         z-index: 1000;

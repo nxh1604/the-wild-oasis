@@ -12,6 +12,13 @@ interface IUserSubmitData {
   passwordConfirm: string;
 }
 
+export const StyledGroup = styled.div`
+  grid-column-start: 3;
+  width: max-content;
+  justify-self: flex-start;
+  align-self: flex-end;
+`;
+
 function SignupForm() {
   const {
     formState: { errors },
@@ -64,9 +71,7 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow
-        label="Password (min 8 characters)"
-        errorMessage={errors.password?.message}>
+      <FormRow label="Password (min 8 characters)" errorMessage={errors.password?.message}>
         <Input
           type="password"
           id="password"
@@ -81,17 +86,14 @@ function SignupForm() {
         />
       </FormRow>
 
-      <FormRow
-        label="Repeat password"
-        errorMessage={errors.passwordConfirm?.message}>
+      <FormRow label="Repeat password" errorMessage={errors.passwordConfirm?.message}>
         <Input
           type="password"
           id="passwordConfirm"
           disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
-            validate: (value) =>
-              getValues().password === value || "Password need to match",
+            validate: (value) => getValues().password === value || "Password need to match",
           })}
         />
       </FormRow>
@@ -111,8 +113,3 @@ function SignupForm() {
 }
 
 export default SignupForm;
-export const StyledGroup = styled.div`
-  grid-column-start: 3;
-  width: max-content;
-  justify-self: flex-start;
-`;
