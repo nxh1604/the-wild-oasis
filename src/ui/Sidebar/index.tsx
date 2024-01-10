@@ -1,7 +1,6 @@
 import { css, styled } from "styled-components";
 import { ButtonIcon, Logo } from "..";
 import MainNav from "../MainNav";
-import Uploader from "../../data/Uploader";
 import { useContext } from "react";
 import { SidebarContext } from "../../contexts/SidebarContext";
 import { HiXMark } from "react-icons/hi2";
@@ -57,7 +56,7 @@ const StyledOverLay = styled.div<{ $open: boolean }>`
     ${({ $open }) =>
       $open &&
       css`
-        overflow: scroll;
+        overflow: auto;
         position: fixed;
         min-height: 100vh;
         min-width: 100vw;
@@ -82,7 +81,6 @@ const Sidebar = (): JSX.Element => {
         </Wrapper>
         <Logo />
         <MainNav />
-        <Uploader />
       </StyledSidebar>
     </StyledOverLay>
   );

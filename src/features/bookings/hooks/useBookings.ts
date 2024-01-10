@@ -6,7 +6,6 @@ import { PAGE_SIZE } from "../../../utils/constant";
 export const useBookings = () => {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-  // filter
   const filters = !!searchParams.get("status") &&
     searchParams.get("status") !== "all" && [
       {
@@ -14,18 +13,10 @@ export const useBookings = () => {
         field: "status",
         value: searchParams.get("status") as string,
       },
-      // {
-      //   method: "gt" as const,
-      //   field: "totalPrice",
-      //   value: 5000,
-      // },
     ];
-  // sort
   const sortQuery = searchParams.get("sort") || "startDate-desc";
   const [field, direction] = sortQuery.split("-");
   const sort = { field, direction };
-
-  // pagination
 
   const curPage = Number(searchParams.get("page")) || 1;
 
@@ -40,7 +31,6 @@ export const useBookings = () => {
 
   if (curPage <= 0) return {};
 
-  // prefecthing next page
   if (count && page < count / PAGE_SIZE)
     void queryClient.prefetchQuery({
       queryKey: ["bookings", filters, sort, page + 1],

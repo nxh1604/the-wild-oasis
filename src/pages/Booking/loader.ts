@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { LoaderFunctionArgs, defer } from "react-router-dom";
 import { getBooking } from "../../services/apiBookings";
 
-export const loader =
+const loader =
   (queryClient: QueryClient) =>
   ({ params }: LoaderFunctionArgs) => {
     const { bookingId } = params;
@@ -15,3 +15,5 @@ export const loader =
       }),
     });
   };
+
+export { loader as bookingLoader };

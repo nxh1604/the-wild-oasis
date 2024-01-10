@@ -14,29 +14,11 @@ export const getCabins = async (): Promise<ICabinData[]> => {
   return data;
 };
 
-// export const getCabinsProperties = async (
-//   properties: Array<Partial<keyof IBookingData<ICabinData, IGuestData>>>
-// ) => {
-//   const { data, error } = (await supabase
-//     .from("cabins")
-//     .select(`${properties.join(",")}`)) as PostgrestResponse<ICabinData>;
-
-//   if (error) {
-//     console.log(error);
-//     throw new Error("Can not get cabins");
-//   }
-
-//   return data;
-// };
-
 export const createOrUpdateCabin = async (cabin: ICabinData, updateId: number | null = null) => {
-  // https://tjfplbwsoorynsirqihu.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
-
   const imageName =
     typeof cabin.image === "string"
       ? cabin.image.split("/").pop()
-      : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        `${uuidv4()}-${cabin.image.name.replace("/", "")}`;
+      : `${uuidv4()}-${cabin.image.name.replace("/", "")}`;
 
   const imagePath =
     typeof cabin.image === "string"

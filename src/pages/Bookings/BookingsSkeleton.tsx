@@ -33,7 +33,8 @@ const BookingsSkeleton = ({ array = [1, 2, 3, 4] }): JSX.Element => {
 export default BookingsSkeleton;
 
 const StyledContainer = styled.div`
-  max-width: 120rem;
+  max-width: 200rem;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

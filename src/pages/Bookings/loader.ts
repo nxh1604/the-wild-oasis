@@ -2,11 +2,9 @@ import { QueryClient } from "@tanstack/react-query";
 import { createSearchParams, defer } from "react-router-dom";
 import { getAllBookings } from "../../services/apiBookings";
 
-export const loader = (queryClient: QueryClient) => () => {
+const loader = (queryClient: QueryClient) => () => {
   const queryString =
-    window.location.pathname === "/bookings"
-      ? window.location.search
-      : "?page=1&status=all";
+    window.location.pathname === "/bookings" ? window.location.search : "?page=1&status=all";
 
   const searchParams = createSearchParams(queryString);
   // filter
@@ -40,3 +38,5 @@ export const loader = (queryClient: QueryClient) => () => {
     }),
   });
 };
+
+export { loader as bookingsPageLoader };

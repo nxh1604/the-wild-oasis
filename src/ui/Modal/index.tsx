@@ -15,13 +15,13 @@ const StyledModal = styled.div`
   transition: all 0.5s;
 
   @media (max-width: 600px) {
-    overflow: scroll;
+    overflow: auto;
     width: 100vw;
   }
 `;
 
 const Overlay = styled.div`
-  overflow: scroll;
+  overflow: auto;
   position: fixed;
   min-height: 100vh;
   min-width: 100vw;

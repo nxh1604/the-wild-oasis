@@ -5,37 +5,36 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
-import { AppLayout, Empty, ProtectedRoute } from "./ui";
+import { AppLayout, Empty, ProtectedRoute, Spinner } from "./ui";
+
 import GlobalStyles from "./styles/GlobalStyles";
 
-import {
-  Account,
-  Bookings,
-  Cabins,
-  Dashboard,
-  Login,
-  PageNotFound,
-  Settings,
-  Users,
-  BookingPage,
-  CheckinPage,
-} from "./pages";
+const Account = lazy(() => import("./pages/Account"));
+const Bookings = lazy(() => import("./pages/Bookings/Bookings"));
+const Cabins = lazy(() => import("./pages/Cabins/Cabins"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Settings = lazy(() => import("./pages/Settings"));
+const Users = lazy(() => import("./pages/Users"));
+const BookingPage = lazy(() => import("./pages/Booking/BookingPage"));
+const CheckinPage = lazy(() => import("./pages/Checkin/CheckinPage"));
 
-import { bookingLoader } from "./pages/Booking";
-import { checkinPageLoader } from "./pages/Checkin";
-import { cabinsPageLoader } from "./pages/Cabins";
-import { bookingsPageLoader } from "./pages/Bookings";
-import { DarkModeProvider } from "./contexts/DarkModeContext";
+import Login from "./pages/Login";
+import PageNotFound from "./pages/PageNotFound";
 import ErrorFallback from "./ui/ErrorFallback";
+import { bookingsPageLoader } from "./pages/Bookings/loader";
+import { bookingLoader } from "./pages/Booking/loader";
+import { checkinPageLoader } from "./pages/Checkin/loader";
+import { cabinsPageLoader } from "./pages/Cabins/loader";
+import { DarkModeProvider } from "./contexts/DarkModeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime: 60 * 1000,
       staleTime: 0,
     },
   },
@@ -43,9 +42,7 @@ const queryClient = new QueryClient({
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    // root route dung de bat' error o? component con ma ko bat' duoc.
     <Route errorElement={<ErrorFallback />}>
-      {/* route chinh' dung de kiem soat' user, kiem tra authienticate */}
       <Route
         element={
           <ProtectedRoute>
@@ -54,26 +51,85 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<Navigate to={"/dashboard"} />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route
+          path="dashboard"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Dashboard />
+            </Suspense>
+          }
+        />
         <Route path="bookings">
-          <Route index element={<Bookings />} loader={bookingsPageLoader(queryClient)} />
+          <Route
+            index
+            element={
+              <Suspense fallback={<Spinner />}>
+                <Bookings />
+              </Suspense>
+            }
+            loader={bookingsPageLoader(queryClient)}
+          />
           <Route
             path=":bookingId"
-            element={<BookingPage />}
+            element={
+              <Suspense fallback={<Spinner />}>
+                <BookingPage />
+              </Suspense>
+            }
             errorElement={<Empty resource="booking" />}
             loader={bookingLoader(queryClient)}
           />
           <Route
             path="checkin/:bookingId"
-            element={<CheckinPage />}
+            element={
+              <Suspense fallback={<Spinner />}>
+                <CheckinPage />
+              </Suspense>
+            }
             loader={checkinPageLoader(queryClient)}
           />
-          <Route path="checkout/:bookingId" element={<CheckinPage />} />
+          <Route
+            path="checkout/:bookingId"
+            element={
+              <Suspense fallback={<Spinner />}>
+                <CheckinPage />
+              </Suspense>
+            }
+          />
         </Route>
-        <Route path="cabins" element={<Cabins />} loader={cabinsPageLoader(queryClient)} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="users" element={<Users />} />
-        <Route path="account" element={<Account />} />
+        <Route
+          path="cabins"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Cabins />
+            </Suspense>
+          }
+          loader={cabinsPageLoader(queryClient)}
+        />
+        <Route
+          path="settings"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Settings />
+            </Suspense>
+          }
+        />
+        <Route
+          path="users"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Users />
+            </Suspense>
+          }
+        />
+        <Route
+          path="account"
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Account />
+            </Suspense>
+          }
+        />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />

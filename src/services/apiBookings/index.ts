@@ -35,15 +35,12 @@ export const getAllBookings = async ({
   `,
     { count: "exact" }
   );
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
   if (filters) {
     const arrayMethod = ["eq", "gt", "lt", "lte", "gte", "is", "neq"] as const;
     filters.forEach((filter) => {
       if (!arrayMethod.includes(filter.method)) throw new Error("invalid filther method");
 
       query = query[filter.method](filter.field, filter.value);
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     });
   }
 
@@ -86,7 +83,6 @@ export async function getBooking(id: number | string) {
   return data;
 }
 
-// Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
 export async function getBookingsAfterDate(date: string) {
   const { data, error } = (await supabase
     .from("bookings")
@@ -104,11 +100,9 @@ export async function getBookingsAfterDate(date: string) {
   return data;
 }
 
-// Returns all STAYS that are were created after the given date
 export async function getStaysAfterDate(date: string) {
   const { data, error } = (await supabase
     .from("bookings")
-    // .select('*')
     .select("*, guests(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday())) as PostgrestResponse<
@@ -123,7 +117,6 @@ export async function getStaysAfterDate(date: string) {
   return data;
 }
 
-// Activity means that there is a check in or a check out today
 export async function getStaysTodayActivity() {
   const { data, error } = (await supabase
     .from("bookings")
@@ -134,9 +127,6 @@ export async function getStaysTodayActivity() {
     .order("created_at")) as PostgrestResponse<
     IBookingData<null, Pick<IGuestData, "fullName" | "nationality" | "countryFlag">>
   >;
-  // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
-  // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
-  // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
 
   if (error) {
     console.error(error);
@@ -161,7 +151,6 @@ export async function updateBooking(id: number | string, obj: Partial<IBookingDa
 }
 
 export async function deleteBooking(id: number | string) {
-  // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
   if (error) {
