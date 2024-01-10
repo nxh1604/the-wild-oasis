@@ -26,8 +26,8 @@ const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100vh;
+  bottom: 0;
+  right: 0;
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -54,7 +54,7 @@ const Button = styled.button`
     height: 2.4rem;
     /* Sometimes we need both */
     /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
+      stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
   }
 `;

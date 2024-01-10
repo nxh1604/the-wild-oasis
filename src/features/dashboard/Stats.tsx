@@ -6,6 +6,7 @@ import {
 } from "react-icons/hi2";
 import Stat from "./Stat";
 import { formatCurrency } from "../../utils/helpers";
+import styled from "styled-components";
 
 const Stats = ({
   bookings,
@@ -35,7 +36,7 @@ const Stats = ({
     (cabinCount * numDays);
 
   return (
-    <>
+    <StatWrapper>
       <Stat
         title="bookings"
         color="blue"
@@ -60,8 +61,15 @@ const Stats = ({
         icon={<HiOutlineChartBar />}
         value={Math.round(occupation * 100) + "%"}
       />
-    </>
+    </StatWrapper>
   );
 };
+
+const StatWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+`;
 
 export default Stats;

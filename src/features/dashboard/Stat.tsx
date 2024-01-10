@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const StyledStat = styled.div`
   /* Box */
+  flex-grow: 1;
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);

@@ -1,8 +1,9 @@
+import styled from "styled-components";
 import { Filter, SortBy, TableOperations } from "../../ui";
 
 function BookingTableOperations() {
   return (
-    <TableOperations>
+    <StyledTableOperations>
       <Filter
         field="status"
         options={[
@@ -25,8 +26,14 @@ function BookingTableOperations() {
           { value: "totalPrice-asc", label: "Sort by amount (low first)" },
         ]}
       />
-    </TableOperations>
+    </StyledTableOperations>
   );
 }
+
+export const StyledTableOperations = styled(TableOperations)`
+  flex-grow: 1;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
+`;
 
 export default BookingTableOperations;

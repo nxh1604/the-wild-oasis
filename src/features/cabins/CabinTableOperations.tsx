@@ -1,8 +1,9 @@
-import { Filter, SortBy, TableOperations } from "../../ui";
+import { Filter, SortBy } from "../../ui";
+import { StyledTableOperations } from "../bookings/BookingTableOperations";
 
 function CabinTableOperations() {
   return (
-    <TableOperations>
+    <StyledTableOperations>
       <Filter
         field="discount"
         options={[
@@ -32,7 +33,7 @@ function CabinTableOperations() {
           },
         ]}
       />
-    </TableOperations>
+    </StyledTableOperations>
   );
 }
 

@@ -7,6 +7,8 @@ import {
   HiOutlineCog6Tooth as SettingIcon,
 } from "react-icons/hi2";
 import styled from "styled-components";
+import { useContext } from "react";
+import { SidebarContext } from "../../contexts/SidebarContext";
 
 const NavList = styled.ul`
   display: flex;
@@ -54,32 +56,34 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const MainNav = (): JSX.Element => {
+  const { onClose } = useContext(SidebarContext);
+
   return (
     <NavList>
       <li>
-        <StyledNavLink to="/dashboard">
+        <StyledNavLink onClick={onClose} to="/dashboard">
           <HomeIcon /> <span>Home</span>
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/bookings">
+        <StyledNavLink onClick={onClose} to="/bookings">
           <CalendarIcon /> <span>Bookings</span>
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/cabins">
+        <StyledNavLink onClick={onClose} to="/cabins">
           <CabinIcon />
           <span>Cabins</span>
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/users">
+        <StyledNavLink onClick={onClose} to="/users">
           <UsersIcon />
           <span>Users</span>
         </StyledNavLink>
       </li>
       <li>
-        <StyledNavLink to="/settings">
+        <StyledNavLink onClick={onClose} to="/settings">
           <SettingIcon />
           <span>Settings</span>
         </StyledNavLink>

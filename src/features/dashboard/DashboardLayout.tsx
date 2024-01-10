@@ -9,10 +9,18 @@ import DurationChart from "./DurationChart";
 import TodayActivity from "../check-in-out/TodayActivity";
 
 const StyledDashboardLayout = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
+`;
+
+const WrapperTodayAndChart = styled.div`
+  display: flex;
+  gap: 2.4rem;
+  @media (max-width: 1280px) {
+    flex-direction: column;
+  }
 `;
 
 export const DashBoardLayout = () => {
@@ -34,8 +42,10 @@ export const DashBoardLayout = () => {
         cabinCount={cabins.length}
         numDays={Number(numDays)}
       />
-      <TodayActivity />
-      <DurationChart confirmedStays={confirmedStays} />
+      <WrapperTodayAndChart>
+        <TodayActivity />
+        <DurationChart confirmedStays={confirmedStays} />
+      </WrapperTodayAndChart>
       <SalesChart bookings={bookings} numDays={Number(numDays)} />
     </StyledDashboardLayout>
   );

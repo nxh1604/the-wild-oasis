@@ -20,7 +20,7 @@ import Heading from "./Heading";
 import Input from "./Input";
 import Logo from "./Logo";
 import Menus from "./Menus";
-import { Modal } from "./Modal";
+import Modal from "./Modal";
 import ProtectedRoute from "./ProtectedRoute";
 import Row from "./Row";
 import Sidebar from "./Sidebar";

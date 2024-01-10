@@ -28,10 +28,10 @@ function Bookings() {
           </div>
         }>
         <StyledContainer>
-          <Row type="horizontal">
-            <Heading as="h1">All bookings</Heading>
+          <StyledRow type="horizontal">
+            <StyledHeading as="h1">All bookings</StyledHeading>
             <BookingTableOperations />
-          </Row>
+          </StyledRow>
           <Row type="vertical">
             <BookingTable />
           </Row>
@@ -42,6 +42,15 @@ function Bookings() {
 }
 
 export default Bookings;
+
+export const StyledHeading = styled(Heading)`
+  flex-grow: 1;
+`;
+
+export const StyledRow = styled(Row)`
+  flex-wrap: wrap;
+  gap: 1.6rem;
+`;
 
 const StyledContainer = styled.div`
   max-width: 120rem;

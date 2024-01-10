@@ -12,12 +12,13 @@ import { useDarkMode } from "../../contexts/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
-
+  min-width: 50rem;
   padding: 2.4rem 3.2rem;
-  grid-column: 3 / span 2;
 
   & > *:first-child {
     margin-bottom: 1.6rem;
@@ -165,7 +166,7 @@ const DurationChart = ({
   return (
     <ChartBox>
       <Heading as={"h2"}>Stay duration summmary</Heading>
-      <ResponsiveContainer width={"100%"} height={240}>
+      <ResponsiveContainer width="100%" height={250}>
         <PieChart>
           <Pie
             data={data}
