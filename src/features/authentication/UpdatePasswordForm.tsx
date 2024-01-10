@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import Button from "../../ui/Button/Button";
+import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
@@ -23,9 +23,7 @@ function UpdatePasswordForm() {
   return (
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow
-        label="Password (min 8 characters)"
-        errorMessage={errors?.password?.message}>
+      <FormRow label="Password (min 8 characters)" errorMessage={errors?.password?.message}>
         <Input
           type="password"
           id="password"
@@ -41,9 +39,7 @@ function UpdatePasswordForm() {
         />
       </FormRow>
 
-      <FormRow
-        label="Confirm password"
-        errorMessage={errors?.passwordConfirm?.message}>
+      <FormRow label="Confirm password" errorMessage={errors?.passwordConfirm?.message}>
         <Input
           type="password"
           autoComplete="new-password"
@@ -51,8 +47,7 @@ function UpdatePasswordForm() {
           disabled={isLoading}
           {...register("passwordConfirm", {
             required: "This field is required",
-            validate: (value) =>
-              getValues().password === value || "Passwords need to match",
+            validate: (value) => getValues().password === value || "Passwords need to match",
           })}
         />
       </FormRow>

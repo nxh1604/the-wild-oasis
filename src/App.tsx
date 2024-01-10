@@ -30,7 +30,7 @@ import { checkinPageLoader } from "./pages/Checkin";
 import { cabinsPageLoader } from "./pages/Cabins";
 import { bookingsPageLoader } from "./pages/Bookings";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
-import ErrorFallback from "./ui/ErrorFallback/ErrorFallback";
+import ErrorFallback from "./ui/ErrorFallback";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,15 +51,12 @@ const router = createBrowserRouter(
           <ProtectedRoute>
             <AppLayout />
           </ProtectedRoute>
-        }>
+        }
+      >
         <Route index element={<Navigate to={"/dashboard"} />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="bookings">
-          <Route
-            index
-            element={<Bookings />}
-            loader={bookingsPageLoader(queryClient)}
-          />
+          <Route index element={<Bookings />} loader={bookingsPageLoader(queryClient)} />
           <Route
             path=":bookingId"
             element={<BookingPage />}
@@ -73,11 +70,7 @@ const router = createBrowserRouter(
           />
           <Route path="checkout/:bookingId" element={<CheckinPage />} />
         </Route>
-        <Route
-          path="cabins"
-          element={<Cabins />}
-          loader={cabinsPageLoader(queryClient)}
-        />
+        <Route path="cabins" element={<Cabins />} loader={cabinsPageLoader(queryClient)} />
         <Route path="settings" element={<Settings />} />
         <Route path="users" element={<Users />} />
         <Route path="account" element={<Account />} />

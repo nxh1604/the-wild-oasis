@@ -26,7 +26,8 @@ function Bookings() {
               <Button onClick={() => navigate(-1)}>Go back &larr;</Button>
             </p>
           </div>
-        }>
+        }
+      >
         <StyledContainer>
           <StyledRow type="horizontal">
             <StyledHeading as="h1">All bookings</StyledHeading>
@@ -53,7 +54,8 @@ export const StyledRow = styled(Row)`
 `;
 
 const StyledContainer = styled.div`
-  max-width: 120rem;
+  max-width: 200rem;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

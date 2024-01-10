@@ -35,7 +35,7 @@ function Cabins() {
 export default Cabins;
 
 const StyledContainer = styled.div`
-  max-width: 120rem;
+  max-width: 200rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

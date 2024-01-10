@@ -1,18 +1,12 @@
 import styled from "styled-components";
 import { Heading } from "../../ui";
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 import { useDarkMode } from "../../contexts/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
   display: flex;
+  width: 100%;
   flex-direction: column;
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -122,9 +116,7 @@ interface IStartData {
 }
 
 function incArrayValue(arr: IStartData[], field: string) {
-  return arr.map((obj) =>
-    obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
-  );
+  return arr.map((obj) => (obj.duration === field ? { ...obj, value: obj.value + 1 } : obj));
 }
 
 function prepareData(
@@ -134,22 +126,16 @@ function prepareData(
   // A bit ugly code, but sometimes this is what it takes when working with real data 😅
 
   const data = stays
-    .reduce(
-      (
-        arr: IStartData[],
-        cur: IBookingData<null, Pick<IGuestData, "fullName">>
-      ) => {
-        const num = cur.numNights;
-        if (num === 1) return incArrayValue(arr, "1 night");
-        if (num < 4) return incArrayValue(arr, `${num} nights`);
-        if (num < 6) return incArrayValue(arr, "4-5 nights");
-        if (num < 8) return incArrayValue(arr, "6-7 nights");
-        if (num < 15) return incArrayValue(arr, "8-14 nights");
-        if (num < 22) return incArrayValue(arr, "15-21 nights");
-        return incArrayValue(arr, "21+ nights");
-      },
-      startData
-    )
+    .reduce((arr: IStartData[], cur: IBookingData<null, Pick<IGuestData, "fullName">>) => {
+      const num = cur.numNights;
+      if (num === 1) return incArrayValue(arr, "1 night");
+      if (num < 4) return incArrayValue(arr, `${num} nights`);
+      if (num < 6) return incArrayValue(arr, "4-5 nights");
+      if (num < 8) return incArrayValue(arr, "6-7 nights");
+      if (num < 15) return incArrayValue(arr, "8-14 nights");
+      if (num < 22) return incArrayValue(arr, "15-21 nights");
+      return incArrayValue(arr, "21+ nights");
+    }, startData)
     .filter((obj) => obj.value > 0);
 
   return data;
@@ -176,13 +162,10 @@ const DurationChart = ({
             outerRadius={110}
             cx={"40%"}
             cy={"50%"}
-            paddingAngle={3}>
+            paddingAngle={3}
+          >
             {data.map((entry) => (
-              <Cell
-                fill={entry.color}
-                stroke={entry.color}
-                key={entry.duration}
-              />
+              <Cell fill={entry.color} stroke={entry.color} key={entry.duration} />
             ))}
           </Pie>
           <Legend

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Button from "../../ui/Button/Button";
+import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
@@ -65,15 +65,10 @@ function UpdateUserDataForm() {
       <FormRow>
         <StyledGroup>
           <ButtonGroup>
-            <Button
-              variation="secondary"
-              type="reset"
-              disabled={isLoading}
-              onClick={handleReset}>
+            <Button variation="secondary" type="reset" disabled={isLoading} onClick={handleReset}>
               Cancel
             </Button>
-            <Button
-              disabled={isLoading || (fullName === currentFullName && !avatar)}>
+            <Button disabled={isLoading || (fullName === currentFullName && !avatar)}>
               Update user
             </Button>
           </ButtonGroup>

@@ -4,7 +4,7 @@ import BookingDataBox from "../../features/bookings/BookingDataBox";
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
 import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button/Button";
+import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
@@ -99,7 +99,8 @@ function CheckinBooking() {
           <Checkbox
             checked={booking.hasBreakfast || hasBreakfast}
             onChange={handleBreakfast}
-            id={"breakfast"}>
+            id={"breakfast"}
+          >
             Want to add breakfast for {formatCurrency(optionalBreakfast)}?
           </Checkbox>
         </Box>
@@ -109,24 +110,21 @@ function CheckinBooking() {
           id={"confirm"}
           checked={booking.isPaid || confirmPaid}
           disabled={booking.isPaid || false || loadingUpdate}
-          onChange={() => setConfirmPaid((confirm) => !confirm)}>
-          I confirm that <strong>{booking.guests.fullName}</strong> has paid
-          total amount of{" "}
+          onChange={() => setConfirmPaid((confirm) => !confirm)}
+        >
+          I confirm that <strong>{booking.guests.fullName}</strong> has paid total amount of{" "}
           {formatCurrency(
-            hasBreakfast
-              ? booking.totalPrice + optionalBreakfast
-              : booking.totalPrice
+            hasBreakfast ? booking.totalPrice + optionalBreakfast : booking.totalPrice
           )}{" "}
           {hasBreakfast &&
-            `(${formatCurrency(booking.totalPrice)} + ${formatCurrency(
-              optionalBreakfast
-            )})`}
+            `(${formatCurrency(booking.totalPrice)} + ${formatCurrency(optionalBreakfast)})`}
         </Checkbox>
       </Box>
       <ButtonGroup>
         <Button
           onClick={handleCheckin}
-          disabled={(!booking.isPaid && !confirmPaid) || loadingUpdate}>
+          disabled={(!booking.isPaid && !confirmPaid) || loadingUpdate}
+        >
           Check in booking #{bookingId}
         </Button>
         <Modal>
