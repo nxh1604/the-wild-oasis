@@ -1,10 +1,4 @@
-import {
-  Navigate,
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-} from "react-router-dom";
+import { Navigate, Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -31,6 +25,8 @@ import { bookingLoader } from "./pages/Booking/loader";
 import { checkinPageLoader } from "./pages/Checkin/loader";
 import { cabinsPageLoader } from "./pages/Cabins/loader";
 import { DarkModeProvider } from "./contexts/DarkModeContext";
+import BookingsSkeleton from "./pages/Bookings/BookingsSkeleton";
+import CabinsSkeletonLoading from "./pages/Cabins/CabinsSkeletonLoading";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,7 +59,7 @@ const router = createBrowserRouter(
           <Route
             index
             element={
-              <Suspense fallback={<Spinner />}>
+              <Suspense fallback={<BookingsSkeleton />}>
                 <Bookings />
               </Suspense>
             }
@@ -100,7 +96,7 @@ const router = createBrowserRouter(
         <Route
           path="cabins"
           element={
-            <Suspense fallback={<Spinner />}>
+            <Suspense fallback={<CabinsSkeletonLoading />}>
               <Cabins />
             </Suspense>
           }

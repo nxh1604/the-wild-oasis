@@ -3,11 +3,10 @@ import styled from "styled-components";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
-
   font-size: 1.4rem;
   background-color: var(--color-grey-0);
   border-radius: 7px;
-  overflow: hidden;
+  overflow: auto;
 `;
 
 const CommonRow = styled.div<{ columns: string }>`
@@ -20,6 +19,7 @@ const CommonRow = styled.div<{ columns: string }>`
 
 const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
+  min-width: 770px;
 
   background-color: var(--color-grey-50);
   border-bottom: 1px solid var(--color-grey-100);
@@ -38,11 +38,14 @@ const StyledRow = styled(CommonRow)`
 `;
 
 const StyledBody = styled.section`
+  min-width: 770px;
   margin: 0.4rem 0;
 `;
 
 const Footer = styled.footer`
   background-color: var(--color-grey-50);
+  min-width: 770px;
+
   display: flex;
   justify-content: center;
   padding: 1.2rem;
@@ -107,10 +110,7 @@ const Content = ({
   return <StyledBody>{data.map(render)}</StyledBody>;
 };
 
-const Row = ({
-  children,
-  ...restProps
-}: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => {
+const Row = ({ children, ...restProps }: React.PropsWithChildren<HTMLAttributes<HTMLDivElement>>) => {
   const { columns } = useContext(TableContext);
 
   return (

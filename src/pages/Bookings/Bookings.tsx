@@ -2,9 +2,8 @@ import { Suspense } from "react";
 import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
-import { Button, Heading, Row } from "../../ui";
+import { Button, Heading, Row, Spinner } from "../../ui";
 import { BookingTable, BookingTableOperations } from "../../features/bookings";
-import BookingsSkeleton from "./BookingsSkeleton";
 
 function Bookings() {
   const { bookings } = useLoaderData() as {
@@ -13,7 +12,7 @@ function Bookings() {
   const navigate = useNavigate();
 
   return (
-    <Suspense fallback={<BookingsSkeleton array={[1, 2, 3, 4]} />}>
+    <Suspense fallback={<Spinner />}>
       <Await
         resolve={bookings}
         errorElement={
