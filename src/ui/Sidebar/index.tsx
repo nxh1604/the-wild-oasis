@@ -31,9 +31,13 @@ const StyledSidebar = styled.aside<{ $open: boolean }>`
   @media (max-width: 1280px) {
     ${({ $open }) => !$open && srOnly}
     position: absolute;
-
+    width: 300px;
     min-height: 100vh;
     z-index: 1000;
+  }
+  @media (max-width: 500px) {
+    ${({ $open }) => !$open && srOnly}
+    width: 100vw;
   }
 `;
 

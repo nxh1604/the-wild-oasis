@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Heading, Row, Table } from "../../ui";
 import { LoadingSkeleton } from "../../ui/Loading";
-const BookingsSkeleton = ({ array = [1, 2, 3, 4] }): JSX.Element => {
+const BookingsSkeleton = ({ array = [1, 2, 3, 4, 5, 6, 7, 8] }): JSX.Element => {
   return (
     <StyledContainer>
       <Row type="horizontal">
@@ -21,10 +21,25 @@ const BookingsSkeleton = ({ array = [1, 2, 3, 4] }): JSX.Element => {
           data={array}
           render={(_, index) => (
             <Table.Row key={index}>
-              <LoadingSkeleton style={{ gridColumn: "1/-1" }} />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
             </Table.Row>
           )}
         />
+        <Table.Footer>
+          <StyledPagination>
+            <Wrapper>
+              <LoadingSkeleton />
+            </Wrapper>
+            <Wrapper>
+              <LoadingSkeleton />
+            </Wrapper>
+          </StyledPagination>
+        </Table.Footer>
       </Table>
     </StyledContainer>
   );
@@ -39,4 +54,17 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;
+`;
+
+const StyledPagination = styled.div`
+  width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 30rem;
 `;

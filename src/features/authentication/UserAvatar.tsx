@@ -22,7 +22,7 @@ const Avatar = styled.img`
   outline: 2px solid var(--color-grey-100);
 `;
 
-const UserAvatar = (): JSX.Element => {
+const UserAvatar = ({ noName = false }: { noName?: boolean }): JSX.Element => {
   const { user } = useUser();
 
   if (!user) return <p>No user</p>;
@@ -31,11 +31,8 @@ const UserAvatar = (): JSX.Element => {
 
   return (
     <StyledUserAvatar>
-      <Avatar
-        src={avatar || "/public/default-user.jpg"}
-        alt={`avatar of user ${fullName}`}
-      />
-      <span>{fullName}</span>
+      <Avatar src={avatar || "/public/default-user.jpg"} alt={`avatar of user ${fullName}`} />
+      {!noName && <span>{fullName}</span>}
     </StyledUserAvatar>
   );
 };
