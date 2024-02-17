@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useState, cloneElement } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  cloneElement,
+} from "react";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
@@ -83,8 +88,6 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const modalPosition = document.getElementById("modal-overlay") as HTMLElement;
-
 const Open = ({
   children,
   openWindowName,
@@ -97,7 +100,15 @@ const Open = ({
   return cloneElement(children, { onClick: () => openModal(openWindowName) });
 };
 
-const Window = ({ children, windowName }: { children: React.ReactElement; windowName: string }) => {
+const modalPosition = document.getElementById("modal-overlay") as HTMLElement;
+
+const Window = ({
+  children,
+  windowName,
+}: {
+  children: React.ReactElement;
+  windowName: string;
+}) => {
   const { openModalName, closeModal } = useContext(ModalContext);
   // const { ref: modalRef } = useClickOutSide<HTMLDivElement | null>(closeModal);
 

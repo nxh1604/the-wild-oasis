@@ -3,15 +3,9 @@ import { format, isToday } from "date-fns";
 
 import { formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { ConfirmDelete, Menus, Modal, Table, Tag } from "../../ui";
+import { ButtonIcon, ConfirmDelete, Menus, Modal, Table, Tag } from "../../ui";
 
-import {
-  HiCheckCircle,
-  HiEllipsisVertical,
-  HiEye,
-  HiMiniTrash,
-  HiXCircle,
-} from "react-icons/hi2";
+import { HiCheckCircle, HiEllipsisVertical, HiEye, HiMiniTrash, HiXCircle } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
 import { useDeleteBooking } from "./hooks/useDeleteBooking";
@@ -70,75 +64,73 @@ function BookingRow({
   };
 
   return (
-    <Table.Row>
-      <Cabin>{cabinName}</Cabin>
+    <>
+      <Table.Row>
+        <Cabin>{cabinName}</Cabin>
 
-      <Stacked>
-        <span>{guestName}</span>
-        <span>{email}</span>
-      </Stacked>
+        <Stacked>
+          <span>{guestName}</span>
+          <span>{email}</span>
+        </Stacked>
 
-      <Stacked>
-        <span>
-          {isToday(new Date(startDate))
-            ? "Today"
-            : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
-        </span>
-        <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
-        </span>
-      </Stacked>
+        <Stacked>
+          <span>
+            {isToday(new Date(startDate)) ? "Today" : formatDistanceFromNow(startDate)} &rarr;{" "}
+            {numNights} night stay
+          </span>
+          <span>
+            {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
+            {format(new Date(endDate), "MMM dd yyyy")}
+          </span>
+        </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+        <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
-      <Menus.Menu>
-        <Modal>
-          <Menus.Open menuId={bookingId}>
-            <HiEllipsisVertical />
-          </Menus.Open>
-          <Menus.Content menuId={bookingId}>
-            <Menus.Item
-              onClick={() => {
-                navigate(`${bookingId}`);
-              }}>
-              <HiEye /> Booking details
-            </Menus.Item>
-            {status === "unconfirmed" && (
-              <Menus.Item onClick={() => navigate(`checkin/${bookingId}`)}>
-                <HiCheckCircle /> Check in
-              </Menus.Item>
-            )}
-            {status === "checked-in" && (
-              <Menus.Item
-                disabled={loadingUpdate}
-                onClick={() => updateCheckout({ bookingId })}>
-                <HiXCircle /> Check out
-              </Menus.Item>
-            )}
-            {status === "unconfirmed" && (
-              <Modal.Open openWindowName="removeBooking">
-                <Menus.Item>
-                  <HiMiniTrash /> Remove booking
+        <Amount>{formatCurrency(totalPrice)}</Amount>
+        <Menus.Menu>
+          <Modal>
+            <Menus.Open menuId={bookingId}>
+              <HiEllipsisVertical />
+            </Menus.Open>
+            <Menus.Content menuId={bookingId}>
+              <ButtonIcon
+                onClick={() => {
+                  navigate(`${bookingId}`);
+                }}>
+                <HiEye /> Booking details
+              </ButtonIcon>
+              {status === "unconfirmed" && (
+                <Menus.Item onClick={() => navigate(`checkin/${bookingId}`)}>
+                  <HiCheckCircle /> Check in
                 </Menus.Item>
-              </Modal.Open>
-            )}
-          </Menus.Content>
-          <Modal.Window windowName="removeBooking">
-            <ConfirmDelete
-              resourceName="booking"
-              onConfirm={() => {
-                if (!bookingId) return;
-                deleteBooking(bookingId);
-              }}
-              disabled={isDeleting}
-            />
-          </Modal.Window>
-        </Modal>
-      </Menus.Menu>
-    </Table.Row>
+              )}
+              {status === "checked-in" && (
+                <Menus.Item disabled={loadingUpdate} onClick={() => updateCheckout({ bookingId })}>
+                  <HiXCircle /> Check out
+                </Menus.Item>
+              )}
+              {status === "unconfirmed" && (
+                <Modal.Open openWindowName="removeBooking">
+                  <Menus.Item>
+                    <HiMiniTrash /> Remove booking
+                  </Menus.Item>
+                </Modal.Open>
+              )}
+            </Menus.Content>
+            <Modal.Window windowName="removeBooking">
+              <ConfirmDelete
+                resourceName="booking"
+                onConfirm={() => {
+                  if (!bookingId) return;
+                  deleteBooking(bookingId);
+                }}
+                disabled={isDeleting}
+              />
+            </Modal.Window>
+          </Modal>
+        </Menus.Menu>
+      </Table.Row>
+    </>
   );
 }
 

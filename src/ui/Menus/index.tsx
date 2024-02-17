@@ -48,7 +48,7 @@ const StyledList = styled.ul<{
   top: ${(props) => props.position.y}px;
 `;
 
-const StyledButton = styled.button`
+export const StyledButton = styled.button`
   width: 100%;
   text-align: left;
   background: none;
@@ -91,9 +91,14 @@ const MenusContext = createContext<IdefaultMenus>({
   handleClose: () => {},
 });
 
-const Menus = ({ children, width = 200 }: React.PropsWithChildren<{ width?: number }>) => {
+const Menus = ({
+  children,
+  width = 200,
+}: React.PropsWithChildren<{ width?: number }>) => {
   const [menu, setMenu] = useState<string | number>("");
-  const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
 
   const handlePosition = (position: { x: number; y: number }) => {
     setPosition(position);
@@ -112,8 +117,7 @@ const Menus = ({ children, width = 200 }: React.PropsWithChildren<{ width?: numb
         handleClose,
         setMenu,
         width,
-      }}
-    >
+      }}>
       {children}
     </MenusContext.Provider>
   );
@@ -130,7 +134,12 @@ const Open = ({
 }: React.PropsWithChildren<
   ButtonHTMLAttributes<HTMLButtonElement> & { menuId?: string | number }
 >) => {
-  const { setMenu, menu, handlePosition, width: ModalWidth } = useContext(MenusContext);
+  const {
+    setMenu,
+    menu,
+    handlePosition,
+    width: ModalWidth,
+  } = useContext(MenusContext);
   const handleOpen = (menuId: string | number | undefined) => {
     menu !== menuId ? setMenu(menuId || "") : setMenu("");
   };
@@ -150,8 +159,7 @@ const Open = ({
         };
         handlePosition(position);
         handleOpen(menuId);
-      }}
-    >
+      }}>
       {children}
     </StyledToggle>
   );
@@ -173,7 +181,12 @@ const Content = ({
   if (menu !== menuId || !position) return null;
 
   return createPortal(
-    <StyledList ref={ref} onClick={handleClose} width={width} position={position} {...restProps}>
+    <StyledList
+      ref={ref}
+      onClick={handleClose}
+      width={width}
+      position={position}
+      {...restProps}>
       {children}
     </StyledList>,
     document.body

@@ -4,6 +4,7 @@ import MainNav from "../MainNav";
 import { useContext } from "react";
 import { SidebarContext } from "../../contexts/SidebarContext";
 import { HiXMark } from "react-icons/hi2";
+import Uploader from "../../data/Uploader";
 
 const srOnly = css`
   position: absolute;
@@ -81,6 +82,7 @@ const Sidebar = (): JSX.Element => {
         </Wrapper>
         <Logo />
         <MainNav />
+        <Uploader />
       </StyledSidebar>
     </StyledOverLay>
   );
